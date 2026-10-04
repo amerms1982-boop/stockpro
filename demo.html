@@ -31,7 +31,23 @@
   body{margin:0;background:
       linear-gradient(180deg, rgba(10,10,14,.22) 0%, rgba(10,10,14,.38) 40%, rgba(20,18,14,.55) 100%),
       var(--bg-image) center 28%/cover fixed no-repeat;
-    color:var(--ink);font-family:'IBM Plex Sans Arabic', sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;}
+    color:var(--ink);font-family:'IBM Plex Sans Arabic', sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;
+    /* Both Arabic webfonts used in this app (IBM Plex Sans Arabic and Cairo) define a "locl"
+       OpenType substitution that swaps plain Western digits (0-9) for Arabic-Indic digit glyphs
+       whenever the text's language is Arabic — even though the underlying characters never
+       change. That's why digits kept showing as Arabic-Indic in plain table/label text (which
+       inherits lang="ar" from <html>) even after every number was formatted/typed as Western
+       digits. font-feature-settings is inherited, so disabling "locl" here turns that
+       substitution off for the whole page in one place, instead of patching lang="en" onto every
+       element that happens to display a number. */
+    font-feature-settings:"locl" 0;
+    /* In this app's fonts a bare "0" can look close to other digits at small sizes (reported:
+       read as "5" in a "0 batch" label) — a slashed zero, when the font provides one, is the
+       standard fix for that ambiguity. Harmless no-op if the active font has no slashed-zero
+       glyph. The clearer fix for the specific case that was reported is the wording change next
+       to it (zero batches now reads as a sentence, not a digit), but this helps everywhere else
+       a bare 0 still appears. */
+    font-variant-numeric:slashed-zero;}
   h1,h2,h3,.display{font-family:'Cairo', sans-serif; font-weight:800; letter-spacing:.2px;}
   .app{max-width:1180px;margin:0 auto;padding:20px 20px 80px;}
 
@@ -428,6 +444,7 @@
 
   <div class="quick-actions">
     <button id="whBtn" onclick="openWarehousesModal()"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> <span data-i18n="warehouses">المخازن</span></button>
+    <button id="contactsBtn" onclick="openContactsModal()"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> <span data-i18n="contactsBtn">الأشخاص</span></button>
     <button id="bulkInBtn" onclick="openBulkIn()"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> <span data-i18n="bulkInTitle">إذن إضافة</span></button>
     <button id="bulkOutBtn" onclick="openBulkOut()"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> <span data-i18n="bulkOutTitle">إذن صرف</span></button>
     <button id="notesHubBtn" onclick="openNotesHub()"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> <span data-i18n="savedNotes">الأذونات المحفوظة</span></button>
@@ -534,8 +551,8 @@
     <button class="modal-close" onclick="closeItemHistoryModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:block;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <h2 id="itemHistoryTitle" data-i18n="itemHistoryBtn">حركة الصنف</h2>
     <div class="log-filters">
-      <input type="date" id="itemHistoryFrom" onchange="renderItemHistoryModal()">
-      <input type="date" id="itemHistoryTo" onchange="renderItemHistoryModal()">
+      <input type="date" lang="en" id="itemHistoryFrom" onchange="renderItemHistoryModal()">
+      <input type="date" lang="en" id="itemHistoryTo" onchange="renderItemHistoryModal()">
       <button class="btn btn-ghost btn-sm" onclick="clearItemHistoryFilter()" data-i18n="clearFilterBtn">مسح الفلتر</button>
     </div>
     <div class="table-scroll">
@@ -558,12 +575,12 @@
     <h2 data-i18n="addNewItemHeading">إضافة صنف جديد</h2>
     <div class="form-grid">
       <div class="full"><label data-i18n="itemNameLabel">اسم الصنف</label><input id="niName" data-i18n-placeholder="itemNameExamplePlaceholder" placeholder="مثال: أرز أبيض 5 كجم"></div>
-      <div class="full"><label data-i18n="reorderLevelOptionalLabel">حد الطلب (اختياري)</label><input id="niReorderLevel" type="number" step="0.01" min="0" data-i18n-placeholder="reorderLevelExamplePlaceholder" placeholder="مثال: 20 — سيبه فاضي لو عايز الحد الافتراضي (20)"></div>
+      <div class="full"><label data-i18n="reorderLevelOptionalLabel">حد الطلب (اختياري)</label><input id="niReorderLevel" type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" min="0" data-i18n-placeholder="reorderLevelExamplePlaceholder" placeholder="مثال: 20 — سيبه فاضي لو عايز الحد الافتراضي (20)"></div>
       <div class="section-head" style="margin-top:4px;margin-bottom:0;"><h2 style="font-size:13px;" data-i18n="unitsSectionHeading">وحدات القياس (اختياري)</h2></div>
       <div class="full item-meta" data-i18n="unitsSectionDesc" style="margin-top:0;">لو التعبئة دي بتتقسم لوحدات (مثلاً كرتونة فيها عبوات، أو كيس فيه قطع)، حدد اسم كل وحدة وعدد الوحدة الثانية داخل الأولى. تقدر بعد كده تدخل الكمية بأي وحدة من الاتنين.</div>
       <div><label data-i18n="unit1NameLabel">اسم الوحدة الأولى (الكبرى)</label><input id="niUnit1Name" data-i18n-placeholder="unit1Placeholder" placeholder="مثال: كرتونة"></div>
       <div><label data-i18n="unit2NameLabel">اسم الوحدة الثانية (الصغرى)</label><input id="niUnit2Name" data-i18n-placeholder="unit2Placeholder" placeholder="مثال: عبوة"></div>
-      <div class="full"><label data-i18n="unitRatioLabel">عدد الوحدة الثانية داخل الوحدة الأولى</label><input id="niUnitRatio" type="number" step="1" min="2" data-i18n-placeholder="unitRatioPlaceholder" placeholder="مثال: 24"></div>
+      <div class="full"><label data-i18n="unitRatioLabel">عدد الوحدة الثانية داخل الوحدة الأولى</label><input id="niUnitRatio" type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="1" min="2" data-i18n-placeholder="unitRatioPlaceholder" placeholder="مثال: 24"></div>
       <div class="full">
         <label data-i18n="itemImageOptionalLabel">صورة الصنف (اختياري)</label>
         <div style="display:flex;align-items:center;gap:12px;">
@@ -587,12 +604,12 @@
     <h2 data-i18n="editItemHeading">تعديل الصنف</h2>
     <div class="form-grid">
       <div class="full"><label data-i18n="itemNameLabel">اسم الصنف</label><input id="editItemName"></div>
-      <div class="full"><label data-i18n="reorderLevelOptionalLabel">حد الطلب (اختياري)</label><input id="editItemReorderLevel" type="number" step="0.01" min="0" data-i18n-placeholder="reorderLevelDefaultPlaceholder" placeholder="سيبه فاضي لو عايز الحد الافتراضي (20)"></div>
+      <div class="full"><label data-i18n="reorderLevelOptionalLabel">حد الطلب (اختياري)</label><input id="editItemReorderLevel" type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" min="0" data-i18n-placeholder="reorderLevelDefaultPlaceholder" placeholder="سيبه فاضي لو عايز الحد الافتراضي (20)"></div>
       <div class="section-head" style="margin-top:4px;margin-bottom:0;"><h2 style="font-size:13px;" data-i18n="unitsSectionHeading">وحدات القياس (اختياري)</h2></div>
       <div class="full item-meta" data-i18n="unitsSectionDesc" style="margin-top:0;">لو التعبئة دي بتتقسم لوحدات (مثلاً كرتونة فيها عبوات، أو كيس فيه قطع)، حدد اسم كل وحدة وعدد الوحدة الثانية داخل الأولى. تقدر بعد كده تدخل الكمية بأي وحدة من الاتنين.</div>
       <div><label data-i18n="unit1NameLabel">اسم الوحدة الأولى (الكبرى)</label><input id="editItemUnit1Name" data-i18n-placeholder="unit1Placeholder" placeholder="مثال: كرتونة"></div>
       <div><label data-i18n="unit2NameLabel">اسم الوحدة الثانية (الصغرى)</label><input id="editItemUnit2Name" data-i18n-placeholder="unit2Placeholder" placeholder="مثال: عبوة"></div>
-      <div class="full"><label data-i18n="unitRatioLabel">عدد الوحدة الثانية داخل الوحدة الأولى</label><input id="editItemUnitRatio" type="number" step="1" min="2" data-i18n-placeholder="unitRatioPlaceholder" placeholder="مثال: 24"></div>
+      <div class="full"><label data-i18n="unitRatioLabel">عدد الوحدة الثانية داخل الوحدة الأولى</label><input id="editItemUnitRatio" type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="1" min="2" data-i18n-placeholder="unitRatioPlaceholder" placeholder="مثال: 24"></div>
       <div class="full">
         <label data-i18n="itemImageLabel">صورة الصنف</label>
         <div style="display:flex;align-items:center;gap:12px;">
@@ -671,13 +688,14 @@
     <h2 data-i18n="bulkInTitle">إذن إضافة</h2>
     <div id="biEditingBanner"></div>
     <div class="form-grid">
-      <div class="full"><label data-i18n="supplierName">اسم المورد</label><input id="biSupplierName" data-i18n-placeholder="supplierName" placeholder="اسم المورد"></div>
-      <div class="full"><label data-i18n="recipientName">اسم المستلم</label><input id="biRecipientName" data-i18n-placeholder="recipientName" placeholder="اسم المستلم"></div>
+      <div class="full item-combo"><label data-i18n="supplierName">اسم المورد</label><input id="biSupplierName" autocomplete="off" oninput="filterContactCombo('bi')" onfocus="openContactCombo('bi')" onkeydown="onContactComboKeydown(event,'bi')" onblur="checkContactHint('bi')" data-i18n-placeholder="supplierName" placeholder="اسم المورد"><div class="item-combo-list" id="biSupplierList" onmousedown="onContactComboMouseDown(event,'bi')"></div><div id="biSupplierHint"></div></div>
+      <div class="full"><label data-i18n="recipientName">اسم المستلم</label><input id="biRecipientName" data-i18n-placeholder="recipientName" placeholder="اسم المستلم" onkeydown="onNoteFieldKeydown(event,'bi','biRecipientName')"></div>
       <div class="item-combo"><label data-i18n="item">الصنف</label><div class="item-meta" style="margin-bottom:4px;min-height:14px;"></div><input id="biItemSearch" autocomplete="off" oninput="filterItemSelect('bi')" onfocus="openItemCombo('bi')" onkeydown="onItemComboKeydown(event,'bi')" data-i18n-placeholder="searchItemPlaceholder" placeholder="اكتب لتبحث بالاسم (أو اختر من القائمة تحت)..."><select id="biItem" onchange="onBiItemChange()" style="display:none;"></select><div class="item-combo-list" id="biItemList" onmousedown="onItemComboMouseDown(event,'bi')"></div></div>
-      <div><label data-i18n="qty">الكمية</label><div class="item-meta" id="biQtyHint" style="margin-bottom:4px;min-height:14px;"></div><input id="biQty" type="number" step="0.01" onfocus="updateQtyAvailableHint('bi')"></div>
-      <div id="biUnitWrap" style="display:none;"><label data-i18n="enterByUnitLabel">الوحدة</label><select id="biUnit" onchange="updateQtyAvailableHint('bi')"></select></div>
-      <div><label data-i18n="expiryDate">تاريخ الصلاحية</label><input id="biExpiry" placeholder="MM/YYYY"></div>
-      <div><label data-i18n="warehouse">المخزن</label><select id="biWarehouse" onchange="updateQtyAvailableHint('bi')"></select></div>
+      <div><label data-i18n="qty">الكمية</label><div class="item-meta" id="biQtyHint" style="margin-bottom:4px;min-height:14px;"></div><input id="biQty" type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" onfocus="updateQtyAvailableHint('bi')" onkeydown="onNoteFieldKeydown(event,'bi','biQty')"></div>
+      <div id="biUnitWrap" style="display:none;"><label data-i18n="enterByUnitLabel">الوحدة</label><select id="biUnit" onchange="updateQtyAvailableHint('bi')" onkeydown="onNoteFieldKeydown(event,'bi','biUnit')"></select></div>
+      <div id="biQtyExtraWrap" style="display:none;"><label data-i18n="extraPacksLabel">+ وحدات مفردة إضافية (اختياري)</label><input id="biQtyExtra" type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" placeholder="0" onkeydown="onNoteFieldKeydown(event,'bi','biQtyExtra')"></div>
+      <div><label data-i18n="expiryDate">تاريخ الصلاحية</label><input id="biExpiry" placeholder="MM/YYYY" onkeydown="onNoteFieldKeydown(event,'bi','biExpiry')"></div>
+      <div><label data-i18n="warehouse">المخزن</label><select id="biWarehouse" onchange="updateQtyAvailableHint('bi')" onkeydown="onNoteFieldKeydown(event,'bi','biWarehouse')"></select></div>
     </div>
     <div class="form-actions"><button class="btn btn-teal" onclick="addBulkInRow()">+ <span data-i18n="addToTableBtn">أضف للجدول</span></button></div>
     <table class="note-table" id="biTable"></table>
@@ -698,12 +716,13 @@
     <div id="boEditingBanner"></div>
     <div class="item-meta" data-i18n="fefoAutoDesc">يتم تحديد الباتشات تلقائيًا (FEFO) عند التأكيد، مع استبعاد الباتشات المنتهية الصلاحية.</div>
     <div class="form-grid">
-      <div class="full"><label data-i18n="locationClient">المكان / العميل</label><input id="boLocationName" data-i18n-placeholder="locationClient" placeholder="المكان / العميل"></div>
-      <div class="full"><label data-i18n="recipientName">اسم المستلم</label><input id="boRecipientName" data-i18n-placeholder="recipientName" placeholder="اسم المستلم"></div>
+      <div class="full item-combo"><label data-i18n="locationClient">المكان / العميل</label><input id="boLocationName" autocomplete="off" oninput="filterContactCombo('bo')" onfocus="openContactCombo('bo')" onkeydown="onContactComboKeydown(event,'bo')" onblur="checkContactHint('bo')" data-i18n-placeholder="locationClient" placeholder="المكان / العميل"><div class="item-combo-list" id="boLocationList" onmousedown="onContactComboMouseDown(event,'bo')"></div><div id="boLocationHint"></div></div>
+      <div class="full"><label data-i18n="recipientName">اسم المستلم</label><input id="boRecipientName" data-i18n-placeholder="recipientName" placeholder="اسم المستلم" onkeydown="onNoteFieldKeydown(event,'bo','boRecipientName')"></div>
       <div class="item-combo"><label data-i18n="item">الصنف</label><div class="item-meta" style="margin-bottom:4px;min-height:14px;"></div><input id="boItemSearch" autocomplete="off" oninput="filterItemSelect('bo')" onfocus="openItemCombo('bo')" onkeydown="onItemComboKeydown(event,'bo')" data-i18n-placeholder="searchItemPlaceholder" placeholder="اكتب لتبحث بالاسم (أو اختر من القائمة تحت)..."><select id="boItem" style="display:none;"></select><div class="item-combo-list" id="boItemList" onmousedown="onItemComboMouseDown(event,'bo')"></div></div>
-      <div><label data-i18n="qtyRequested">الكمية المطلوبة</label><div class="item-meta" id="boQtyHint" style="margin-bottom:4px;min-height:14px;"></div><input id="boQty" type="number" step="0.01" onfocus="updateQtyAvailableHint('bo')"></div>
-      <div id="boUnitWrap" style="display:none;"><label data-i18n="enterByUnitLabel">الوحدة</label><select id="boUnit" onchange="updateQtyAvailableHint('bo')"></select></div>
-      <div><label data-i18n="warehouse">المخزن</label><select id="boWarehouse" onchange="updateQtyAvailableHint('bo')"></select></div>
+      <div><label data-i18n="qtyRequested">الكمية المطلوبة</label><div class="item-meta" id="boQtyHint" style="margin-bottom:4px;min-height:14px;"></div><input id="boQty" type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" onfocus="updateQtyAvailableHint('bo')" onkeydown="onNoteFieldKeydown(event,'bo','boQty')"></div>
+      <div id="boUnitWrap" style="display:none;"><label data-i18n="enterByUnitLabel">الوحدة</label><select id="boUnit" onchange="updateQtyAvailableHint('bo')" onkeydown="onNoteFieldKeydown(event,'bo','boUnit')"></select></div>
+      <div id="boQtyExtraWrap" style="display:none;"><label data-i18n="extraPacksLabel">+ وحدات مفردة إضافية (اختياري)</label><input id="boQtyExtra" type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" placeholder="0" onkeydown="onNoteFieldKeydown(event,'bo','boQtyExtra')"></div>
+      <div><label data-i18n="warehouse">المخزن</label><select id="boWarehouse" onchange="updateQtyAvailableHint('bo')" onkeydown="onNoteFieldKeydown(event,'bo','boWarehouse')"></select></div>
     </div>
     <div class="form-actions"><button class="btn btn-teal" onclick="addBulkOutRow()">+ <span data-i18n="addToTableBtn">أضف للجدول</span></button></div>
     <table class="note-table" id="boTable"></table>
@@ -908,6 +927,36 @@
   </div>
 </div>
 
+<!-- CONTACTS (PEOPLE) MODAL -->
+<div class="overlay" id="contactsOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeContactsModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:block;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <h2 data-i18n="contactsTitle">الأشخاص</h2>
+    <div id="contactsList"></div>
+    <div class="form-actions">
+      <button id="addContactBtn" class="btn btn-teal" onclick="openContactForm()">+ <span data-i18n="addNewContactBtn">إضافة شخص جديد</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT FORM MODAL (add/edit) -->
+<div class="overlay" id="contactFormOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeContactForm()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:block;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <h2 id="contactFormTitle" data-i18n="newContactTitle">إضافة شخص جديد</h2>
+    <div class="form-grid">
+      <div class="full"><label data-i18n="contactNameLabel">الاسم</label><input id="contactName" data-i18n-placeholder="contactNameLabel" placeholder="الاسم"></div>
+      <div><label data-i18n="contactTypeLabel">النوع</label><select id="contactType"><option value="supplier" data-i18n="contactTypeSupplier">مورد</option><option value="customer" data-i18n="contactTypeCustomer">عميل</option></select></div>
+      <div><label data-i18n="contactPhoneLabel">رقم التليفون</label><input id="contactPhone" type="text" inputmode="tel" data-i18n-placeholder="contactPhoneLabel" placeholder="رقم التليفون"></div>
+      <div class="full"><label data-i18n="contactAddressLabel">العنوان</label><input id="contactAddress" data-i18n-placeholder="contactAddressLabel" placeholder="العنوان"></div>
+    </div>
+    <div class="form-actions">
+      <button id="saveContactBtn" class="btn btn-success" onclick="saveContact()"><span data-i18n="save">حفظ</span></button>
+      <button class="btn btn-ghost" onclick="closeContactForm()"><span data-i18n="cancel">إلغاء</span></button>
+    </div>
+  </div>
+</div>
+
 <!-- WAREHOUSE CONTENTS MODAL -->
 <div class="overlay" id="whContentsOverlay">
   <div class="modal">
@@ -929,11 +978,12 @@
     <div id="trEditingBanner"></div>
     <div class="form-grid">
       <div class="full item-combo"><label data-i18n="item">الصنف</label><input id="trItemSearch" autocomplete="off" oninput="filterItemSelect('tr')" onfocus="openItemCombo('tr')" onkeydown="onItemComboKeydown(event,'tr')" data-i18n-placeholder="searchItemPlaceholder" placeholder="اكتب لتبحث بالاسم (أو اختر من القائمة تحت)..." style="margin-bottom:6px;"><select id="trItem" onchange="onTransferItemChange()" style="display:none;"></select><div class="item-combo-list" id="trItemList" onmousedown="onItemComboMouseDown(event,'tr')"></div></div>
-      <div><label data-i18n="fromWarehouse">من مخزن</label><select id="trFrom" onchange="onTransferWhChange()"></select></div>
-      <div><label data-i18n="toWarehouse">إلى مخزن</label><select id="trTo"></select></div>
-      <div><label data-i18n="qty">الكمية</label><div class="item-meta" id="trQtyHint" style="margin-bottom:4px;min-height:14px;"></div><input id="trQty" type="number" step="0.01" onfocus="updateQtyAvailableHint('tr')"></div>
-      <div id="trUnitWrap" style="display:none;"><label data-i18n="enterByUnitLabel">الوحدة</label><div class="item-meta" style="margin-bottom:4px;min-height:14px;"></div><select id="trUnit" onchange="updateQtyAvailableHint('tr')"></select></div>
-      <div class="full"><label data-i18n="recipientName">اسم المستلم</label><input id="trRecipientName" data-i18n-placeholder="recipientName" placeholder="اسم المستلم"></div>
+      <div><label data-i18n="fromWarehouse">من مخزن</label><select id="trFrom" onchange="onTransferWhChange()" onkeydown="onNoteFieldKeydown(event,'tr','trFrom')"></select></div>
+      <div><label data-i18n="toWarehouse">إلى مخزن</label><select id="trTo" onkeydown="onNoteFieldKeydown(event,'tr','trTo')"></select></div>
+      <div><label data-i18n="qty">الكمية</label><div class="item-meta" id="trQtyHint" style="margin-bottom:4px;min-height:14px;"></div><input id="trQty" type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" onfocus="updateQtyAvailableHint('tr')" onkeydown="onNoteFieldKeydown(event,'tr','trQty')"></div>
+      <div id="trUnitWrap" style="display:none;"><label data-i18n="enterByUnitLabel">الوحدة</label><div class="item-meta" style="margin-bottom:4px;min-height:14px;"></div><select id="trUnit" onchange="updateQtyAvailableHint('tr')" onkeydown="onNoteFieldKeydown(event,'tr','trUnit')"></select></div>
+      <div id="trQtyExtraWrap" style="display:none;"><label data-i18n="extraPacksLabel">+ وحدات مفردة إضافية (اختياري)</label><input id="trQtyExtra" type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" placeholder="0" onkeydown="onNoteFieldKeydown(event,'tr','trQtyExtra')"></div>
+      <div class="full"><label data-i18n="recipientName">اسم المستلم</label><input id="trRecipientName" data-i18n-placeholder="recipientName" placeholder="اسم المستلم" onkeydown="onNoteFieldKeydown(event,'tr','trRecipientName')"></div>
     </div>
     <div class="form-actions"><button class="btn btn-teal" onclick="addTransferRow()">+ <span data-i18n="addToTableBtn">أضف للجدول</span></button></div>
     <table class="note-table" id="trTable"></table>
@@ -1060,6 +1110,7 @@ const DEMO_DB_API = {
     return {
       doc(id){
         return {
+          _coll: name, _id: id,
           get: async()=>demoSnap(id, (demoLoad()[name]||{})[id]),
           set: async(data)=>{ const db=demoLoad(); (db[name]=db[name]||{})[id]=demoClone(data); demoSave(); },
           delete: async()=>{ const db=demoLoad(); if(db[name]) delete db[name][id]; demoSave(); }
@@ -1069,6 +1120,24 @@ const DEMO_DB_API = {
         const c = demoLoad()[name]||{};
         const docs = Object.keys(c).map(id=>demoSnap(id, c[id]));
         return { docs, size:docs.length, forEach:f=>docs.forEach(f) };
+      }
+    };
+  },
+  // Mimics Firestore's write-batch API (used by commitOpsInChunks() for the atomic persist()),
+  // applying every queued op to the in-memory/sessionStorage demo DB in one shot on commit().
+  batch(){
+    const ops = [];
+    return {
+      set(ref, data){ ops.push({type:'set', ref, data}); },
+      delete(ref){ ops.push({type:'delete', ref}); },
+      commit: async()=>{
+        const db = demoLoad();
+        for(const op of ops){
+          const coll = (db[op.ref._coll] = db[op.ref._coll] || {});
+          if(op.type==='set') coll[op.ref._id] = demoClone(op.data);
+          else delete coll[op.ref._id];
+        }
+        demoSave();
       }
     };
   }
@@ -1522,6 +1591,8 @@ const I18N = {
     errUsernameExists: `اسم المستخدم موجود مسبقًا`,
     errEnterItemName: `اكتب اسم الصنف`,
     errTableEmpty: `الجدول فاضي`,
+    msgSaveInProgress: `جاري الحفظ، لحظة واحدة...`,
+    extraPacksLabel: `+ وحدات مفردة إضافية (اختياري)`,
     errUserNotFound: `المستخدم غير موجود بالفعل`,
     errDeleteRetry: `تعذر الحذف، حاول مرة أخرى`,
     errRejectRetry: `تعذر الرفض، حاول مرة أخرى`,
@@ -1646,6 +1717,27 @@ const I18N = {
     brandingSavedMsg: `تم حفظ الهوية الجديدة بنجاح`,
     brandingResetAllConfirm: `هل أنت متأكد من استرجاع كل عناصر الهوية (الخلفية، اللوجو، الأيقونة، الألوان، اسم التطبيق) للوضع الافتراضي؟`,
     errImageTooLarge: `تعذر معالجة الصورة، جرّب صورة تانية`,
+    contactsBtn: `الأشخاص`,
+    contactsTitle: `الأشخاص`,
+    addNewContactBtn: `إضافة شخص جديد`,
+    editContactTitle: `تعديل بيانات شخص`,
+    newContactTitle: `إضافة شخص جديد`,
+    contactNameLabel: `الاسم`,
+    contactTypeLabel: `النوع`,
+    contactTypeSupplier: `مورد`,
+    contactTypeCustomer: `عميل`,
+    contactPhoneLabel: `رقم التليفون`,
+    contactAddressLabel: `العنوان`,
+    contactEmptyMsg: `لا يوجد أشخاص مسجلين`,
+    msgContactAdded: `تمت إضافة الشخص`,
+    msgContactUpdated: `تم تحديث بيانات الشخص`,
+    msgContactDeleted: `تم حذف الشخص`,
+    confirmDeleteContactPrefix: `حذف "`,
+    confirmDeleteContactSuffix: `"؟`,
+    errContactNameRequired: `اسم الشخص مطلوب`,
+    contactNotFoundMsgSupplier: `هذا المورد غير مسجل في قائمة الأشخاص`,
+    contactNotFoundMsgCustomer: `هذا العميل غير مسجل في قائمة الأشخاص`,
+    defineContactBtn: `تعريف الشخص`,
   },
   en: {
     pageTitle: `StockPro · Warehouse Management`,
@@ -1962,6 +2054,8 @@ const I18N = {
     errUsernameExists: `Username already exists`,
     errEnterItemName: `Enter the item name`,
     errTableEmpty: `The table is empty`,
+    msgSaveInProgress: `Saving, one moment...`,
+    extraPacksLabel: `+ extra single units (optional)`,
     errUserNotFound: `User no longer exists`,
     errDeleteRetry: `Delete failed, try again`,
     errRejectRetry: `Reject failed, try again`,
@@ -2086,6 +2180,27 @@ This cannot be undone once executed. Are you sure?`,
     brandingSavedMsg: `Branding saved successfully`,
     brandingResetAllConfirm: `Are you sure you want to reset all branding (background, logo, icon, colors, app name) to default?`,
     errImageTooLarge: `Could not process this image, try another one`,
+    contactsBtn: `People`,
+    contactsTitle: `People`,
+    addNewContactBtn: `Add New Person`,
+    editContactTitle: `Edit Contact`,
+    newContactTitle: `Add New Contact`,
+    contactNameLabel: `Name`,
+    contactTypeLabel: `Type`,
+    contactTypeSupplier: `Supplier`,
+    contactTypeCustomer: `Customer`,
+    contactPhoneLabel: `Phone Number`,
+    contactAddressLabel: `Address`,
+    contactEmptyMsg: `No contacts yet`,
+    msgContactAdded: `Contact added`,
+    msgContactUpdated: `Contact updated`,
+    msgContactDeleted: `Contact deleted`,
+    confirmDeleteContactPrefix: `Delete "`,
+    confirmDeleteContactSuffix: `"?`,
+    errContactNameRequired: `Contact name is required`,
+    contactNotFoundMsgSupplier: `This supplier isn't registered in the people list`,
+    contactNotFoundMsgCustomer: `This customer isn't registered in the people list`,
+    defineContactBtn: `Define Person`,
   }
 };
 
@@ -2098,6 +2213,16 @@ function t(key){ return (I18N[LANG] && I18N[LANG][key]) || I18N.ar[key] || key; 
 // too similarly in this font (٢ and ٣ especially), so numbers use Latin digits with Arabic
 // grouping/decimal conventions instead.
 function appLocale(){ return LANG==='ar' ? 'ar-EG-u-nu-latn' : 'en-US'; }
+// Some keyboards (notably Arabic Windows layouts) send actual Arabic-Indic digit characters
+// (٠-٩) or Persian/Urdu ones (۰-۹) when the number row is pressed, not plain '0'-'9' — those
+// would silently fail parseFloat/parseInt downstream. All quantity/number text inputs normalize
+// through this as the person types, so whatever they see is always what gets parsed.
+function toLatinDigits(s){
+  return String(s==null?'':s).replace(/[٠-٩۰-۹]/g, d=>{
+    const code = d.charCodeAt(0);
+    return String(code>=0x06F0 ? code-0x06F0 : code-0x0660);
+  });
+}
 /* Transaction-log entries mix translated labels with free-typed data (item/warehouse names,
    numbers) and were saved to Firestore pre-translated in whatever language was active at the
    time. To show old AND new log rows correctly in whichever language is being viewed now, we
@@ -2187,6 +2312,23 @@ function toggleDD(ev, btn){
 }
 document.addEventListener('click', e=>{ if(!e.target.closest('.dd')) closeAllDD(); });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAllDD(); });
+// Esc closes whichever modal window is currently open, the same as clicking its own X button —
+// reusing that button's own click handler (rather than just hiding the overlay) so any side
+// effects it runs (resetting a form, cancelling an in-progress edit, etc.) still happen.
+// Overlays share one z-index and are appended in source order, so when more than one is open at
+// once (e.g. a confirm dialog on top of a saved-notes list) the LAST active one in the DOM is
+// the topmost one visually — exactly the one Esc should close.
+document.addEventListener('keydown', e=>{
+  if(e.key !== 'Escape') return;
+  const actives = document.querySelectorAll('.overlay.active');
+  if(!actives.length) return;
+  const top = actives[actives.length-1];
+  if(top.id==='confirmOverlay'){ resolveConfirm(false); return; }
+  if(top.id==='promptOverlay'){ resolvePrompt(false); return; }
+  if(top.id==='imageZoomOverlay'){ closeImageZoom(); return; }
+  const closeBtn = top.querySelector('.modal-close');
+  if(closeBtn) closeBtn.click();
+});
 function rerenderCurrentUI(){
   // Re-render whatever is currently visible so dynamically-built strings update immediately.
   try{
@@ -2501,6 +2643,7 @@ const PERMISSION_DEFS = {
   bulkIn: {label:'bulkInTitle', group:'notes', actions:{view:'actView', create:'actCreate', edit:'actEdit', delete:'actDelete', print:'actPrint'}},
   bulkOut: {label:'bulkOutTitle', group:'notes', actions:{view:'actView', create:'actCreate', edit:'actEdit', delete:'actDelete', print:'actPrint'}},
   transfer: {label:'transferTitle', group:'notes', actions:{view:'actView', create:'actCreate', edit:'actEdit', delete:'actDelete', print:'actPrint'}},
+  contacts: {label:'contactsTitle', actions:{view:'actView', create:'actCreate', edit:'actEdit', delete:'actDelete'}},
 };
 function defaultPermissions(){
   const p = {};
@@ -2532,6 +2675,7 @@ function applyPermissions(){
   const set = (id, ok)=>{ const el=document.getElementById(id); if(el) el.style.display = ok ? '' : 'none'; };
   set('itemsNavBtn', hasPerm('items','view'));
   set('whBtn', hasPerm('warehouses','view'));
+  set('contactsBtn', hasPerm('contacts','view'));
   set('bulkInBtn', hasPerm('bulkIn','create'));
   set('bulkOutBtn', hasPerm('bulkOut','create'));
   set('notesHubBtn', hasPerm('bulkIn','view') || hasPerm('bulkOut','view') || hasPerm('transfer','view'));
@@ -2562,6 +2706,12 @@ let editingNoteMeta = null;
 // while the same permit window stays open, keep updating that one note/serial instead of creating a new
 // permit each time. Reset to null whenever that modal is opened fresh, closed, or "new table" is clicked.
 let liveNoteSession = {bi:null, bo:null, tr:null};
+// Guards against a second "تأكيد وحفظ" click landing WHILE the previous one is still mid-save
+// (its persist() hasn't resolved yet). Without this, the second click sees editingNoteMeta already
+// cleared and liveNoteSession not yet set, so it falls through to "brand new note" logic and the
+// same permit gets saved twice under two different numbers. The commit button is disabled for the
+// same reason, belt-and-suspenders.
+let noteCommitInFlight = {bi:false, bo:false, tr:false};
 // Undoes a live-session note's previously-applied balance deltas and removes its old log entries, so the
 // full current row set can be re-applied cleanly under the same id/serial. Returns what's needed to put
 // everything back if the new save then fails.
@@ -2656,6 +2806,7 @@ async function setDefaultWarehouse(id){
 }
 function whName(id){ return STATE.warehouses[id] || id; }
 function genWhId(){ return 'w'+Date.now()+Math.random().toString(36).slice(2,5); }
+function genContactId(){ return 'c'+Date.now()+Math.random().toString(36).slice(2,5); }
 function whOptionsHtml(selected, excludeId){
   return warehouseIds().filter(id=>id!==excludeId).map(id=>`<option value="${id}" ${id===selected?'selected':''}>${whName(id)}</option>`).join('');
 }
@@ -2671,10 +2822,11 @@ async function loadState(){
     const metaSnap = await db.collection('meta').doc('main').get();
     if(metaSnap.exists){
       const meta = metaSnap.data();
-      const [itemsSnap, notesSnap, txSnap] = await Promise.all([
+      const [itemsSnap, notesSnap, txSnap, contactsSnap] = await Promise.all([
         db.collection('items').get(),
         db.collection('notes').get(),
-        db.collection('txlog').get()
+        db.collection('txlog').get(),
+        db.collection('contacts').get()
       ]);
       const itemsById = {};
       itemsSnap.forEach(d=>{ itemsById[d.id] = d.data(); });
@@ -2689,6 +2841,8 @@ async function loadState(){
       pages.sort((a,b)=>(parseInt(a.id.slice(1),10)||0)-(parseInt(b.id.slice(1),10)||0));
       let transactions = [];
       pages.forEach(p=>{ transactions = transactions.concat((p.data.entries)||[]); });
+      const contacts = [];
+      contactsSnap.forEach(d=>contacts.push(d.data()));
       STATE = {
         warehouses: meta.warehouses || {w1:'المخزن الأول', w2:'المخزن الثاني'},
         defaultWarehouseId: meta.defaultWarehouseId || null,
@@ -2701,22 +2855,23 @@ async function loadState(){
         itemsManuallyOrdered: !!meta.itemsManuallyOrdered,
         itemSortMode: meta.itemSortMode || (meta.itemsManuallyOrdered ? 'manual' : 'name'),
         branding: meta.branding || null,
-        items, notes, transactions
+        items, notes, transactions, contacts
       };
       ensureDefaults();
       applyBranding();
       const itemsClone = {}; items.forEach(it=>{ itemsClone[it.id] = JSON.parse(JSON.stringify(it)); });
       const notesClone = {}; notes.forEach(n=>{ notesClone[n.id] = JSON.parse(JSON.stringify(n)); });
-      SYNCED = { meta: JSON.parse(JSON.stringify(metaBody())), items: itemsClone, notes: notesClone, txCount: transactions.length };
+      const contactsClone = {}; contacts.forEach(c=>{ contactsClone[c.id] = JSON.parse(JSON.stringify(c)); });
+      SYNCED = { meta: JSON.parse(JSON.stringify(metaBody())), items: itemsClone, notes: notesClone, contacts: contactsClone, txCount: transactions.length };
       return true;
     }
     // أول تشغيل — لسه مفيش بيانات محفوظة، ابدأ بالأصناف الافتراضية
     STATE = {
       warehouses:{w1:'المخزن الرئيسي', w2:'مخزن الفرع', w3:'مخزن المرتجعات'},
       items: SEED_ITEMS.map(it=>({id:it.id, name:it.name, ...(it.image?{image:it.image}:{}), ...(it.reorderLevel?{reorderLevel:it.reorderLevel}:{}), batches:it.batches.map(b=>({...b, balances:{...b.balances}}))})),
-      transactions: [], flags:{ultraTecMovedV1:true,balancesWipedV1:true,imagesExpiriesWipedV1:true}, notes:[], nextNoteSerial:{in:1, out:1, transfer:1, opening:1}, users:[], itemsManuallyOrdered:false, itemSortMode:'name', branding:null
+      transactions: [], flags:{ultraTecMovedV1:true,balancesWipedV1:true,imagesExpiriesWipedV1:true}, notes:[], contacts:[], nextNoteSerial:{in:1, out:1, transfer:1, opening:1}, users:[], itemsManuallyOrdered:false, itemSortMode:'name', branding:null
     };
-    SYNCED = { meta:null, items:{}, notes:{}, txCount:0 };
+    SYNCED = { meta:null, items:{}, notes:{}, contacts:{}, txCount:0 };
     return await persist();
   }catch(e){
     console.error('loadState failed', e);
@@ -2748,11 +2903,17 @@ function ensureDefaults(){
     const ids = Object.keys(STATE.warehouses);
     STATE.defaultWarehouseId = ids.length ? ids[0] : null;
   }
+  if(!STATE.contacts) STATE.contacts = [];
 }
-async function syncTransactionsToDb(db){
+function buildTxSyncPlan(){
+  // Pure planning: decides which txlog pages need to be set/deleted without
+  // performing any I/O, so its operations can be folded into the same atomic
+  // batch as the meta/items/notes writes in persist(). Returns {sets, deletes, txCount}.
   const already = SYNCED.txCount || 0;
   const total = STATE.transactions.length;
-  if(total === already) return true;
+  const sets = [];
+  const deletes = [];
+  if(total === already) return {sets, deletes, txCount: total};
   if(total > already){
     // Growing: only the pages after what's already saved need (re)writing.
     const firstPage = Math.floor(already/TX_PAGE_SIZE)+1;
@@ -2760,8 +2921,7 @@ async function syncTransactionsToDb(db){
     for(let p=firstPage; p<=lastPage; p++){
       const start=(p-1)*TX_PAGE_SIZE, end=p*TX_PAGE_SIZE;
       const entries = STATE.transactions.slice(start,end);
-      const ok = await writeWithRetry(()=>db.collection('txlog').doc('p'+p).set({entries}));
-      if(!ok) return false;
+      sets.push({page: p, entries});
     }
   } else {
     // Shrinking (e.g. clearing the log or a data wipe): rewrite every remaining
@@ -2772,15 +2932,33 @@ async function syncTransactionsToDb(db){
     for(let p=1; p<=newLastPage; p++){
       const start=(p-1)*TX_PAGE_SIZE, end=p*TX_PAGE_SIZE;
       const entries = STATE.transactions.slice(start,end);
-      const ok = await writeWithRetry(()=>db.collection('txlog').doc('p'+p).set({entries}));
-      if(!ok) return false;
+      sets.push({page: p, entries});
     }
     for(let p=newLastPage+1; p<=oldLastPage; p++){
-      const ok = await writeWithRetry(()=>db.collection('txlog').doc('p'+p).delete());
-      if(!ok) return false;
+      deletes.push({page: p});
     }
   }
-  SYNCED.txCount = total;
+  return {sets, deletes, txCount: total};
+}
+async function commitOpsInChunks(db, ops){
+  // Firestore write batches cap at 500 operations; chunk conservatively at 450
+  // to leave headroom. All chunks must succeed for the overall commit to count,
+  // since a note save and its matching balance/txlog changes must land together
+  // or not at all — never partially, which is what used to cause a balance
+  // update to persist with no corresponding note.
+  if(ops.length === 0) return true;
+  for(let i=0; i<ops.length; i+=450){
+    const chunk = ops.slice(i, i+450);
+    const ok = await writeWithRetry(async ()=>{
+      const batch = db.batch();
+      for(const op of chunk){
+        if(op.type === 'set') batch.set(op.ref, op.data);
+        else batch.delete(op.ref);
+      }
+      await batch.commit();
+    });
+    if(!ok) return false;
+  }
   return true;
 }
 async function persist(){
@@ -2789,44 +2967,87 @@ async function persist(){
     showToast(t('errFirebaseNotSetup'));
     return false;
   }
-  let allOk = true;
+  // Build the full set of pending writes/deletes BEFORE touching the network,
+  // then commit them all atomically (in one or more all-or-nothing batches).
+  // This guarantees an item-balance change and its note (and txlog entries)
+  // can never succeed or fail independently of each other.
+  const ops = [];
   const newMeta = metaBody();
-  if(!SYNCED.meta || !deepEqualJson(newMeta, SYNCED.meta)){
-    const ok = await writeWithRetry(()=>db.collection('meta').doc('main').set(newMeta));
-    if(ok) SYNCED.meta = JSON.parse(JSON.stringify(newMeta)); else allOk = false;
-  }
+  const metaChanged = !SYNCED.meta || !deepEqualJson(newMeta, SYNCED.meta);
+  if(metaChanged) ops.push({type: 'set', ref: db.collection('meta').doc('main'), data: newMeta});
+
   const currentIds = new Set();
+  const changedItems = [];
   for(const item of STATE.items){
     currentIds.add(item.id);
     if(!deepEqualJson(item, SYNCED.items[item.id])){
-      const ok = await writeWithRetry(()=>db.collection('items').doc(item.id).set(item));
-      if(ok) SYNCED.items[item.id] = JSON.parse(JSON.stringify(item)); else allOk = false;
+      changedItems.push(item);
+      ops.push({type: 'set', ref: db.collection('items').doc(item.id), data: item});
     }
   }
+  const deletedItemIds = [];
   for(const id of Object.keys(SYNCED.items)){
     if(!currentIds.has(id)){
-      const ok = await writeWithRetry(()=>db.collection('items').doc(id).delete());
-      if(ok) delete SYNCED.items[id]; else allOk = false;
+      deletedItemIds.push(id);
+      ops.push({type: 'delete', ref: db.collection('items').doc(id)});
     }
   }
+
   const currentNoteIds = new Set();
+  const changedNotes = [];
   for(const note of STATE.notes){
     currentNoteIds.add(note.id);
     if(!deepEqualJson(note, SYNCED.notes[note.id])){
-      const ok = await writeWithRetry(()=>db.collection('notes').doc(note.id).set(note));
-      if(ok) SYNCED.notes[note.id] = JSON.parse(JSON.stringify(note)); else allOk = false;
+      changedNotes.push(note);
+      ops.push({type: 'set', ref: db.collection('notes').doc(note.id), data: note});
     }
   }
+  const deletedNoteIds = [];
   for(const id of Object.keys(SYNCED.notes)){
     if(!currentNoteIds.has(id)){
-      const ok = await writeWithRetry(()=>db.collection('notes').doc(id).delete());
-      if(ok) delete SYNCED.notes[id]; else allOk = false;
+      deletedNoteIds.push(id);
+      ops.push({type: 'delete', ref: db.collection('notes').doc(id)});
     }
   }
-  const txOk = await syncTransactionsToDb(db);
-  if(!txOk) allOk = false;
-  if(!allOk) showToast(t('errPartialSaveFailed'));
-  return allOk;
+
+  const currentContactIds = new Set();
+  const changedContacts = [];
+  for(const contact of (STATE.contacts||[])){
+    currentContactIds.add(contact.id);
+    if(!deepEqualJson(contact, SYNCED.contacts[contact.id])){
+      changedContacts.push(contact);
+      ops.push({type: 'set', ref: db.collection('contacts').doc(contact.id), data: contact});
+    }
+  }
+  const deletedContactIds = [];
+  for(const id of Object.keys(SYNCED.contacts)){
+    if(!currentContactIds.has(id)){
+      deletedContactIds.push(id);
+      ops.push({type: 'delete', ref: db.collection('contacts').doc(id)});
+    }
+  }
+
+  const txPlan = buildTxSyncPlan();
+  for(const s of txPlan.sets) ops.push({type: 'set', ref: db.collection('txlog').doc('p'+s.page), data: {entries: s.entries}});
+  for(const d of txPlan.deletes) ops.push({type: 'delete', ref: db.collection('txlog').doc('p'+d.page)});
+
+  const ok = await commitOpsInChunks(db, ops);
+  if(!ok){
+    showToast(t('errPartialSaveFailed'));
+    return false;
+  }
+  // Only now, after a confirmed successful commit of every op, update the
+  // local SYNCED snapshot — so it can never drift from what's actually on
+  // the server.
+  if(metaChanged) SYNCED.meta = JSON.parse(JSON.stringify(newMeta));
+  for(const item of changedItems) SYNCED.items[item.id] = JSON.parse(JSON.stringify(item));
+  for(const id of deletedItemIds) delete SYNCED.items[id];
+  for(const note of changedNotes) SYNCED.notes[note.id] = JSON.parse(JSON.stringify(note));
+  for(const id of deletedNoteIds) delete SYNCED.notes[id];
+  for(const contact of changedContacts) SYNCED.contacts[contact.id] = JSON.parse(JSON.stringify(contact));
+  for(const id of deletedContactIds) delete SYNCED.contacts[id];
+  SYNCED.txCount = txPlan.txCount;
+  return true;
 }
 
 /* ============ ONE-TIME MIGRATIONS ============ */
@@ -3068,6 +3289,7 @@ function enterApp(skipRecoveryCheck){
   applyPermissions();
   syncItemSortMenu();
   syncItemViewMenu();
+  refreshContactDatalists();
   renderDashboard(); renderItems(); renderLog();
   if(!skipRecoveryCheck && currentUser.role==='admin' && !hasRecoveryCode()){
     setTimeout(async ()=>{
@@ -3579,24 +3801,38 @@ function itemWhTotal(item, wh){
   if(!item || !wh) return 0;
   return item.batches.reduce((s,b)=>s+((b.balances&&b.balances[wh])||0), 0);
 }
-// "Available: N Carton" (whole units) when the larger unit is chosen, or the plain base-unit
-// count (e.g. "Available: 48 Pack") otherwise — shown above a quantity field so the person can
-// see what's on hand, in whichever unit they're about to type a quantity in.
+// "Available: N Carton and M Pack" — always shows the full mixed breakdown (same split used
+// everywhere else, e.g. fmtQty), regardless of which unit the person is about to type a
+// quantity in. Previously, picking the larger unit floored to whole cartons and silently
+// dropped any leftover loose packs instead of showing the true available amount.
 function availableQtyHintText(item, wh, unitChoice){
   if(!item || !wh) return '';
   const totalBase = itemWhTotal(item, wh);
-  if(itemHasUnits(item) && unitChoice==='u1'){
-    const count = Math.floor((totalBase+1e-9)/item.unitRatio);
-    return `${t('availableQtyLabel')}: ${count>0 ? plainQty(count)+' '+item.unit1Name : t('outOfStockLabel')}`;
-  }
-  const label = itemHasUnits(item) ? item.unit2Name : '';
-  return `${t('availableQtyLabel')}: ${totalBase>0 ? plainQty(totalBase)+(label?(' '+label):'') : t('outOfStockLabel')}`;
+  return `${t('availableQtyLabel')}: ${totalQtyDisplay(item, totalBase)}`;
 }
 const QTY_HINT_CONFIG = {
-  bi: {item:'biItem', unit:'biUnit', wh:'biWarehouse', hint:'biQtyHint', search:'biItemSearch'},
-  bo: {item:'boItem', unit:'boUnit', wh:'boWarehouse', hint:'boQtyHint', search:'boItemSearch'},
-  tr: {item:'trItem', unit:'trUnit', wh:'trFrom', hint:'trQtyHint', search:'trItemSearch'}
+  bi: {item:'biItem', unit:'biUnit', wh:'biWarehouse', hint:'biQtyHint', search:'biItemSearch', extraWrap:'biQtyExtraWrap', extraInput:'biQtyExtra'},
+  bo: {item:'boItem', unit:'boUnit', wh:'boWarehouse', hint:'boQtyHint', search:'boItemSearch', extraWrap:'boQtyExtraWrap', extraInput:'boQtyExtra'},
+  tr: {item:'trItem', unit:'trUnit', wh:'trFrom', hint:'trQtyHint', search:'trItemSearch', extraWrap:'trQtyExtraWrap', extraInput:'trQtyExtra'}
 };
+// Shows/hides the "+ extra single units" field: only makes sense once an item with two units is
+// picked AND the larger unit (e.g. كرتونة) is the one selected to enter the main quantity in —
+// that's the one case where "10 cartons and also 5 loose packs" can't be said in a single number.
+function refreshQtyExtraField(prefix, item, unitChoice){
+  const cfg = QTY_HINT_CONFIG[prefix];
+  if(!cfg || !cfg.extraWrap) return;
+  const wrapEl = document.getElementById(cfg.extraWrap);
+  if(!wrapEl) return;
+  const show = itemHasUnits(item) && unitChoice==='u1';
+  wrapEl.style.display = show ? '' : 'none';
+  if(!show){
+    const inputEl = document.getElementById(cfg.extraInput);
+    if(inputEl) inputEl.value = '';
+  } else {
+    const inputEl = document.getElementById(cfg.extraInput);
+    if(inputEl) inputEl.placeholder = '0 '+item.unit2Name;
+  }
+}
 function updateQtyAvailableHint(prefix){
   const cfg = QTY_HINT_CONFIG[prefix];
   if(!cfg) return;
@@ -3606,7 +3842,7 @@ function updateQtyAvailableHint(prefix){
   // the underlying <select> defaults to some item — so an empty search box means "nothing chosen
   // yet" and the hint should stay blank rather than showing a default item's quantity.
   const searchEl = document.getElementById(cfg.search);
-  if(searchEl && !searchEl.value.trim()){ hintEl.textContent = ''; return; }
+  if(searchEl && !searchEl.value.trim()){ hintEl.textContent = ''; refreshQtyExtraField(prefix, null, 'u2'); return; }
   const itemEl = document.getElementById(cfg.item);
   const item = itemEl ? STATE.items.find(i=>i.id===itemEl.value) : null;
   const whEl = document.getElementById(cfg.wh);
@@ -3614,6 +3850,7 @@ function updateQtyAvailableHint(prefix){
   const unitEl = document.getElementById(cfg.unit);
   const unitChoice = (unitEl && itemHasUnits(item)) ? unitEl.value : 'u2';
   hintEl.textContent = availableQtyHintText(item, wh, unitChoice);
+  refreshQtyExtraField(prefix, item, unitChoice);
 }
 
 /* ============ REORDER LEVEL (حد الطلب) ============ */
@@ -3786,7 +4023,7 @@ function renderItems(){
         ${thumb}
         <div class="body">
           <div class="name">${it.name}</div>
-          <div class="sub"><span>${it.batches.length} ${t('batchUnit')}</span><span style="font-size:16px;font-weight:800;color:var(--ink);font-family:'IBM Plex Sans Arabic',sans-serif;">${t('totalLabel')}: ${totalQtyDisplay(it, itemTotal(it))}</span></div>
+          <div class="sub"><span>${it.batches.length>0 ? it.batches.length+' '+t('batchUnit') : t('noBatchesForItem')}</span><span style="font-size:16px;font-weight:800;color:var(--ink);font-family:'IBM Plex Sans Arabic',sans-serif;">${t('totalLabel')}: ${totalQtyDisplay(it, itemTotal(it))}</span></div>
           <div class="queue">${chips || '<span class="chip empty"></span>'}</div>
         </div>
       </div>`;
@@ -4171,7 +4408,7 @@ function openOpeningBalances(){
   orderedItems().forEach(item=>{
     const unitTitle = itemHasUnits(item) ? ` title="${t('colQty')}: ${item.unit2Name}"` : '';
     item.batches.forEach(b=>{
-      const cells = whCols.map(w=>`<td><input type="number" step="0.01" data-item="${item.id}" data-batch="${b.id}" data-wh="${w}" value="${b.balances[w]||0}"${unitTitle}></td>`).join('');
+      const cells = whCols.map(w=>`<td><input type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" data-item="${item.id}" data-batch="${b.id}" data-wh="${w}" value="${b.balances[w]||0}"${unitTitle}></td>`).join('');
       const nameCell = itemHasUnits(item) ? `${item.name} <span style="font-size:10px;color:var(--ink-soft);">(${t('colQty')}: ${item.unit2Name})</span>` : item.name;
       rows += `<tr><td>${nameCell}</td><td>${b.expiry||t('statusUnspecified')}</td>${cells}</tr>`;
     });
@@ -4302,7 +4539,8 @@ function onItemComboMouseDown(ev, prefix){
   pickItemComboById(prefix, opt.dataset.id);
 }
 // Arrow keys move the highlight through the open list; Enter picks whichever row is highlighted
-// (defaulting to the first match if the person hasn't arrowed yet).
+// (defaulting to the first match if the person hasn't arrowed yet), then moves on to the next
+// field in the note form — same as Enter does everywhere else in these forms (see below).
 function onItemComboKeydown(ev, prefix){
   const listEl = document.getElementById(prefix+'ItemList');
   if(!listEl) return;
@@ -4315,16 +4553,57 @@ function onItemComboKeydown(ev, prefix){
     ev.preventDefault();
     moveItemComboActive(prefix, -1);
   } else if(ev.key==='Enter'){
-    if(!listEl.classList.contains('open')) return;
-    const opts = listEl.querySelectorAll('.item-combo-opt');
-    const idx = itemComboActiveIndex[prefix]>=0 ? itemComboActiveIndex[prefix] : 0;
-    if(opts[idx]){
-      ev.preventDefault();
-      pickItemComboById(prefix, opts[idx].dataset.id);
+    ev.preventDefault();
+    if(listEl.classList.contains('open')){
+      const opts = listEl.querySelectorAll('.item-combo-opt');
+      const idx = itemComboActiveIndex[prefix]>=0 ? itemComboActiveIndex[prefix] : 0;
+      if(opts[idx]) pickItemComboById(prefix, opts[idx].dataset.id);
     }
+    focusNextNoteField(prefix, prefix+'ItemSearch');
   }
 }
 document.addEventListener('mousedown', e=>{ if(!e.target.closest('.item-combo')) closeAllItemCombos(); });
+
+/* ============ ENTER-TO-NEXT-FIELD IN NOTE FORMS (bulk in / bulk out / transfer) ============ */
+// Lets the person move through a note's fields with Enter instead of the mouse. Each list is the
+// full tab order for that form; a field hidden at the moment (e.g. the unit dropdown, only shown
+// for items with two units) is skipped automatically. Enter on the last field adds the row, the
+// same as clicking "أضف للجدول", then sends focus back to the item field so the next row can
+// start right away.
+const NOTE_FIELD_ORDER = {
+  bi: ['biSupplierName','biRecipientName','biItemSearch','biQty','biUnit','biQtyExtra','biExpiry','biWarehouse'],
+  bo: ['boLocationName','boRecipientName','boItemSearch','boQty','boUnit','boQtyExtra','boWarehouse'],
+  tr: ['trItemSearch','trFrom','trTo','trQty','trUnit','trQtyExtra','trRecipientName']
+};
+const NOTE_ADD_ROW_FN = { bi: 'addBulkInRow', bo: 'addBulkOutRow', tr: 'addTransferRow' };
+function isNoteFieldUsable(el){
+  return !!el && el.offsetParent!==null && !el.disabled;
+}
+function focusNoteField(el){
+  if(!el) return;
+  el.focus();
+  if(typeof el.select==='function' && (el.tagName==='INPUT')) el.select();
+}
+function focusNextNoteField(prefix, currentId){
+  const order = NOTE_FIELD_ORDER[prefix];
+  if(!order) return;
+  const startIdx = order.indexOf(currentId);
+  for(let j=startIdx+1; j<order.length; j++){
+    const el = document.getElementById(order[j]);
+    if(isNoteFieldUsable(el)){ focusNoteField(el); return; }
+  }
+  // Reached the end of the form: add the row (same as the "أضف للجدول" button), then jump back
+  // to the first field so the person can start typing the next row immediately.
+  const addFnName = NOTE_ADD_ROW_FN[prefix];
+  if(addFnName && typeof window[addFnName]==='function') window[addFnName]();
+  const firstUsable = order.map(id=>document.getElementById(id)).find(isNoteFieldUsable);
+  focusNoteField(firstUsable);
+}
+function onNoteFieldKeydown(ev, prefix, currentId){
+  if(ev.key!=='Enter') return;
+  ev.preventDefault();
+  focusNextNoteField(prefix, currentId);
+}
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAllItemCombos(); });
 function filterItemSelect(prefix){
   const sel = document.getElementById(prefix+'Item');
@@ -4345,12 +4624,15 @@ function onBiItemChange(){
 }
 function openBulkIn(){
   liveNoteSession.bi = null;
+  noteCommitInFlight.bi = false;
+  const biCommitBtn = document.getElementById('bulkInCommitBtn'); if(biCommitBtn) biCommitBtn.disabled = false;
   document.getElementById('biItemSearch').value = '';
   document.getElementById('biItem').innerHTML = itemOptionsHtml();
   document.getElementById('biWarehouse').innerHTML = whOptionsHtml(warehouseIds()[0]);
-  document.getElementById('biQty').value=''; document.getElementById('biExpiry').value='';
+  document.getElementById('biQty').value=''; document.getElementById('biExpiry').value=''; document.getElementById('biQtyExtra').value='';
   document.getElementById('biSupplierName').value = (editingNoteMeta && editingNoteMeta.type==='in' && editingNoteBackup) ? (editingNoteBackup.supplier||'') : '';
   document.getElementById('biRecipientName').value = (editingNoteMeta && editingNoteMeta.type==='in' && editingNoteBackup) ? (editingNoteBackup.recipient||'') : '';
+  checkContactHint('bi');
   onBiItemChange();
   renderBulkInTable();
   updateEditingBanner('bi');
@@ -4386,18 +4668,26 @@ function updateEditingBanner(which){
     el.innerHTML = '';
   }
 }
+// Reads the "+ extra single units" field (e.g. 5 loose packs on top of N cartons) — only
+// meaningful when the larger unit is what's selected for the main quantity; 0 otherwise.
+function readExtraQty(prefix, item, unitChoice){
+  if(!itemHasUnits(item) || unitChoice!=='u1') return 0;
+  const el = document.getElementById(QTY_HINT_CONFIG[prefix].extraInput);
+  return el ? (parseFloat(el.value)||0) : 0;
+}
 function addBulkInRow(){
   const itemId = document.getElementById('biItem').value;
   const item = STATE.items.find(i=>i.id===itemId);
   const enteredQty = parseFloat(document.getElementById('biQty').value);
   const unitChoice = itemHasUnits(item) ? document.getElementById('biUnit').value : 'u2';
+  const extraQty = readExtraQty('bi', item, unitChoice);
   const wh = document.getElementById('biWarehouse').value;
   if(!item){ showToast(t('errCompleteRowData')); return; }
   if(!enteredQty || enteredQty<=0){ showToast(t('errCompleteRowData')); return; }
-  const qty = toBaseQty(item, enteredQty, unitChoice);
+  const qty = toBaseQty(item, enteredQty, unitChoice) + extraQty;
   const expiry = document.getElementById('biExpiry').value.trim() || null;
-  bulkInRows.push({itemId, itemName:item.name, qty, enteredQty, unitChoice, expiry, wh, whLabel:whName(wh)});
-  document.getElementById('biQty').value=''; document.getElementById('biExpiry').value='';
+  bulkInRows.push({itemId, itemName:item.name, qty, enteredQty, unitChoice, extraQty, expiry, wh, whLabel:whName(wh)});
+  document.getElementById('biQty').value=''; document.getElementById('biExpiry').value=''; document.getElementById('biQtyExtra').value='';
   renderBulkInTable();
 }
 function removeBulkInRow(i){ bulkInRows.splice(i,1); renderBulkInTable(); }
@@ -4407,18 +4697,31 @@ function renderBulkInTable(){
     const item = STATE.items.find(x=>x.id===r.itemId);
     const unitCell = itemHasUnits(item) ? `<select onchange="updateBulkInRow(${i},'unit',this.value)" style="border:1px solid var(--line);border-radius:6px;padding:4px 4px;font-family:inherit;font-size:11.5px;margin-inline-start:4px;">${unitSelectHtml(item, r.unitChoice)}</select>` : '';
     return `<tr><td>${i+1}</td><td>${r.itemName}</td>
-    <td style="white-space:nowrap;"><input type="number" step="0.01" value="${r.enteredQty}" onchange="updateBulkInRow(${i},'qty',this.value)" style="width:64px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:inherit;font-size:12.5px;">${unitCell}</td>
+    <td style="white-space:nowrap;"><input type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" value="${r.enteredQty}" onchange="updateBulkInRow(${i},'qty',this.value)" style="width:64px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:inherit;font-size:12.5px;">${unitCell}${extraQtyCellHtml('updateBulkInRow',i,item,r)}</td>
     <td><input value="${(r.expiry||'').replace(/"/g,'&quot;')}" placeholder="MM/YYYY" onchange="updateBulkInRow(${i},'expiry',this.value)" style="width:90px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:inherit;font-size:12.5px;"></td>
-    <td>${r.whLabel}</td><td class="rm" onclick="removeBulkInRow(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></td></tr>`;
+    <td><select onchange="updateBulkInRow(${i},'wh',this.value)" style="border:1px solid var(--line);border-radius:6px;padding:4px 4px;font-family:inherit;font-size:12.5px;">${whOptionsHtml(r.wh)}</select></td><td class="rm" onclick="removeBulkInRow(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></td></tr>`;
   }).join('');
   document.getElementById('biTable').innerHTML = head + (rows || `<tr><td colspan="6" style="text-align:center;color:var(--ink-soft);">${t('noRows')}</td></tr>`);
+}
+// Recomputes a row's base-unit qty from its entered amount, unit choice and any extra loose packs.
+function rowBaseQty(item, row){
+  return toBaseQty(item, row.enteredQty, row.unitChoice) + (row.unitChoice==='u1' ? (row.extraQty||0) : 0);
+}
+// The small "+ N packs" input shown next to a row's unit dropdown once it's set to the larger
+// unit — lets a mixed amount (e.g. 10 cartons and 5 loose packs) be corrected after the row was
+// already added, not just at entry time.
+function extraQtyCellHtml(updateFnName, i, item, row){
+  if(!itemHasUnits(item) || row.unitChoice!=='u1') return '';
+  return `<input type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" value="${row.extraQty||0}" onchange="${updateFnName}(${i},'extraQty',this.value)" placeholder="+ ${item.unit2Name}" title="${t('extraPacksLabel')}" style="width:52px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:inherit;font-size:12.5px;margin-inline-start:4px;">`;
 }
 function updateBulkInRow(i, field, value){
   const row = bulkInRows[i];
   if(!row) return;
   const item = STATE.items.find(x=>x.id===row.itemId);
-  if(field==='qty'){ row.enteredQty = parseFloat(value)||0; row.qty = toBaseQty(item, row.enteredQty, row.unitChoice); }
-  else if(field==='unit'){ row.unitChoice = value; row.qty = toBaseQty(item, row.enteredQty, row.unitChoice); }
+  if(field==='qty'){ row.enteredQty = parseFloat(value)||0; row.qty = rowBaseQty(item, row); }
+  else if(field==='unit'){ row.unitChoice = value; if(value!=='u1') row.extraQty = 0; row.qty = rowBaseQty(item, row); }
+  else if(field==='extraQty'){ row.extraQty = parseFloat(value)||0; row.qty = rowBaseQty(item, row); }
+  else if(field==='wh'){ row.wh = value; row.whLabel = whName(value); }
   else row[field] = value.trim();
 }
 function clearBulkIn(){ bulkInRows=[]; renderBulkInTable(); }
@@ -4432,6 +4735,11 @@ function printBulkInAndClear(){
 }
 async function commitBulkIn(){
   if(!bulkInRows.length){ showToast(t('errTableEmpty')); return; }
+  if(noteCommitInFlight.bi){ showToast(t('msgSaveInProgress')); return; }
+  noteCommitInFlight.bi = true;
+  const commitBtn = document.getElementById('bulkInCommitBtn');
+  if(commitBtn) commitBtn.disabled = true;
+  try{
   const supplier = document.getElementById('biSupplierName').value.trim();
   const recipient = document.getElementById('biRecipientName').value.trim();
   const isApproving = !!(editingNoteMeta && editingNoteMeta.approving);
@@ -4513,18 +4821,25 @@ async function commitBulkIn(){
   }
   updateEditingBanner('bi');
   renderDashboard(); renderItems();
+  } finally {
+    noteCommitInFlight.bi = false;
+    if(commitBtn) commitBtn.disabled = false;
+  }
 }
 
 /* ============ BULK OUT (إذن صرف) ============ */
 function openBulkOut(){
   liveNoteSession.bo = null;
+  noteCommitInFlight.bo = false;
+  const boCommitBtn = document.getElementById('bulkOutCommitBtn'); if(boCommitBtn) boCommitBtn.disabled = false;
   document.getElementById('boItemSearch').value = '';
   document.getElementById('boItem').innerHTML = itemOptionsHtml();
   document.getElementById('boWarehouse').innerHTML = whOptionsHtml(warehouseIds()[0]);
   onBulkOutItemChange();
-  document.getElementById('boQty').value='';
+  document.getElementById('boQty').value=''; document.getElementById('boQtyExtra').value='';
   document.getElementById('boLocationName').value = (editingNoteMeta && editingNoteMeta.type==='out' && editingNoteBackup) ? (editingNoteBackup.location||'') : '';
   document.getElementById('boRecipientName').value = (editingNoteMeta && editingNoteMeta.type==='out' && editingNoteBackup) ? (editingNoteBackup.recipient||'') : '';
+  checkContactHint('bo');
   renderBulkOutTable();
   updateEditingBanner('bo');
   document.getElementById('bulkOutOverlay').classList.add('active');
@@ -4552,9 +4867,10 @@ function addBulkOutRow(){
   const item = STATE.items.find(i=>i.id===itemId);
   const enteredQty = parseFloat(document.getElementById('boQty').value);
   const unitChoice = itemHasUnits(item) ? document.getElementById('boUnit').value : 'u2';
+  const extraQty = readExtraQty('bo', item, unitChoice);
   const wh = document.getElementById('boWarehouse').value;
   if(!item || !enteredQty || enteredQty<=0){ showToast(t('errCompleteRowData')); return; }
-  const qty = toBaseQty(item, enteredQty, unitChoice);
+  const qty = toBaseQty(item, enteredQty, unitChoice) + extraQty;
   const {alloc} = computeFefoAllocation(item, wh, qty, true);
   if(!alloc.length){
     const hasExpiredOnly = computeFefoAllocation(item, wh, qty, false).alloc.length > 0;
@@ -4562,8 +4878,8 @@ function addBulkOutRow(){
     return;
   }
   const expiry = formatFefoExpiryLabel(alloc);
-  bulkOutRows.push({itemId, itemName:item.name, qty, enteredQty, unitChoice, wh, whLabel:whName(wh), expiry});
-  document.getElementById('boQty').value='';
+  bulkOutRows.push({itemId, itemName:item.name, qty, enteredQty, unitChoice, extraQty, wh, whLabel:whName(wh), expiry});
+  document.getElementById('boQty').value=''; document.getElementById('boQtyExtra').value='';
   renderBulkOutTable();
 }
 function removeBulkOutRow(i){ bulkOutRows.splice(i,1); renderBulkOutTable(); }
@@ -4573,8 +4889,8 @@ function renderBulkOutTable(){
     const item = STATE.items.find(x=>x.id===r.itemId);
     const unitCell = itemHasUnits(item) ? `<select onchange="updateBulkOutRow(${i},'unit',this.value)" style="border:1px solid var(--line);border-radius:6px;padding:4px 4px;font-family:inherit;font-size:11.5px;margin-inline-start:4px;">${unitSelectHtml(item, r.unitChoice)}</select>` : '';
     return `<tr><td>${i+1}</td><td>${r.itemName}</td>
-    <td style="white-space:nowrap;"><input type="number" step="0.01" value="${r.enteredQty}" onchange="updateBulkOutRow(${i},'qty',this.value)" style="width:64px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:inherit;font-size:12.5px;">${unitCell}</td>
-    <td>${r.expiry||''}</td><td>${r.whLabel}</td><td class="rm" onclick="removeBulkOutRow(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></td></tr>`;
+    <td style="white-space:nowrap;"><input type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" value="${r.enteredQty}" onchange="updateBulkOutRow(${i},'qty',this.value)" style="width:64px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:inherit;font-size:12.5px;">${unitCell}${extraQtyCellHtml('updateBulkOutRow',i,item,r)}</td>
+    <td>${r.expiry||''}</td><td><select onchange="updateBulkOutRow(${i},'wh',this.value)" style="border:1px solid var(--line);border-radius:6px;padding:4px 4px;font-family:inherit;font-size:12.5px;">${whOptionsHtml(r.wh)}</select></td><td class="rm" onclick="removeBulkOutRow(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></td></tr>`;
   }).join('');
   document.getElementById('boTable').innerHTML = head + (rows || `<tr><td colspan="6" style="text-align:center;color:var(--ink-soft);">${t('noRows')}</td></tr>`);
 }
@@ -4582,11 +4898,17 @@ function updateBulkOutRow(i, field, value){
   const row = bulkOutRows[i];
   if(!row) return;
   const item = STATE.items.find(x=>x.id===row.itemId);
-  if(field==='qty'){ row.enteredQty = parseFloat(value)||0; row.qty = toBaseQty(item, row.enteredQty, row.unitChoice); }
-  else if(field==='unit'){ row.unitChoice = value; row.qty = toBaseQty(item, row.enteredQty, row.unitChoice); }
+  if(field==='qty'){ row.enteredQty = parseFloat(value)||0; row.qty = rowBaseQty(item, row); }
+  else if(field==='unit'){ row.unitChoice = value; if(value!=='u1') row.extraQty = 0; row.qty = rowBaseQty(item, row); }
+  else if(field==='extraQty'){ row.extraQty = parseFloat(value)||0; row.qty = rowBaseQty(item, row); }
+  else if(field==='wh'){ row.wh = value; row.whLabel = whName(value); }
   if(item){
     const {alloc} = computeFefoAllocation(item, row.wh, row.qty, true);
     row.expiry = formatFefoExpiryLabel(alloc);
+    if(field==='wh' && !alloc.length){
+      const hasExpiredOnly = computeFefoAllocation(item, row.wh, row.qty, false).alloc.length > 0;
+      showToast(hasExpiredOnly ? (t('errOnlyExpiredInWhPrefix')+whName(row.wh)+t('errOnlyExpiredInWhSuffix')) : (t('errNoBalanceForItemInWhPrefix')+whName(row.wh)));
+    }
   }
   renderBulkOutTable();
 }
@@ -4601,6 +4923,11 @@ function printBulkOutAndClear(){
 }
 async function commitBulkOut(){
   if(!bulkOutRows.length){ showToast(t('errTableEmpty')); return; }
+  if(noteCommitInFlight.bo){ showToast(t('msgSaveInProgress')); return; }
+  noteCommitInFlight.bo = true;
+  const commitBtn = document.getElementById('bulkOutCommitBtn');
+  if(commitBtn) commitBtn.disabled = true;
+  try{
   const location = document.getElementById('boLocationName').value.trim();
   const recipient = document.getElementById('boRecipientName').value.trim();
   const isApproving = !!(editingNoteMeta && editingNoteMeta.approving);
@@ -4681,6 +5008,10 @@ async function commitBulkOut(){
   }
   updateEditingBanner('bo');
   renderDashboard(); renderItems();
+  } finally {
+    noteCommitInFlight.bo = false;
+    if(commitBtn) commitBtn.disabled = false;
+  }
 }
 
 /* ============ SAVED NOTES (تعديل/طباعة الأذون المحفوظة) ============ */
@@ -4820,7 +5151,9 @@ function rowQtyDisplay(r){
   if(r.unitChoice && r.enteredQty!=null){
     const item = STATE.items.find(x=>x.id===r.itemId);
     const label = item ? qtyUnitLabel(item, r.unitChoice) : '';
-    return label ? `${plainQty(r.enteredQty)} ${label}` : plainQty(r.enteredQty);
+    const mainPart = label ? `${plainQty(r.enteredQty)} ${label}` : plainQty(r.enteredQty);
+    if(r.extraQty>0 && item) return `${mainPart} ${t('andWord')} ${plainQty(r.extraQty)} ${item.unit2Name}`;
+    return mainPart;
   }
   return plainQty(r.qty);
 }
@@ -5028,13 +5361,212 @@ async function deleteWarehouse(id){
     showToast(t('errDeleteRetry'));
   }
 }
+/* ============ CONTACTS (PEOPLE: SUPPLIERS/CUSTOMERS) ============ */
+let editingContactId = null;
+function openContactsModal(){ renderContactsList(); document.getElementById('contactsOverlay').classList.add('active'); }
+function closeContactsModal(){ document.getElementById('contactsOverlay').classList.remove('active'); }
+function contactTypeLabel(type){ return type==='customer' ? t('contactTypeCustomer') : t('contactTypeSupplier'); }
+function renderContactsList(){
+  const el = document.getElementById('contactsList');
+  const addBtn = document.getElementById('addContactBtn');
+  if(addBtn) addBtn.style.display = hasPerm('contacts','create') ? '' : 'none';
+  const contacts = (STATE.contacts||[]).slice().sort((a,b)=>a.name.localeCompare(b.name,'ar'));
+  if(!contacts.length){
+    el.innerHTML = `<div class="item-meta" style="text-align:center;padding:12px 0;">${t('contactEmptyMsg')}</div>`;
+    return;
+  }
+  el.innerHTML = contacts.map(c=>`
+    <div class="wh-row">
+      <span class="wname">${c.name} <span class="badge">${contactTypeLabel(c.type)}</span>${c.phone ? ` · ${c.phone}` : ''}</span>
+      <div class="wactions">
+        ${hasPerm('contacts','edit') ? `<button class="btn btn-ghost btn-sm" onclick="openContactForm('${c.id}')"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg> ${t('renameBtn')}</button>` : ''}
+        ${hasPerm('contacts','delete') ? `<button class="btn btn-danger btn-sm" onclick="deleteContact('${c.id}')">${t('deleteBtn')}</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+function openContactForm(id){
+  editingContactId = id || null;
+  const c = id ? (STATE.contacts||[]).find(x=>x.id===id) : null;
+  document.getElementById('contactFormTitle').textContent = c ? t('editContactTitle') : t('newContactTitle');
+  document.getElementById('contactName').value = c ? c.name : '';
+  document.getElementById('contactType').value = c ? c.type : 'supplier';
+  document.getElementById('contactPhone').value = c ? (c.phone||'') : '';
+  document.getElementById('contactAddress').value = c ? (c.address||'') : '';
+  document.getElementById('contactFormOverlay').classList.add('active');
+}
+function closeContactForm(){ document.getElementById('contactFormOverlay').classList.remove('active'); editingContactId = null; }
+async function saveContact(){
+  const name = document.getElementById('contactName').value.trim();
+  if(!name){ showToast(t('errContactNameRequired')); return; }
+  const type = document.getElementById('contactType').value === 'customer' ? 'customer' : 'supplier';
+  const phone = document.getElementById('contactPhone').value.trim();
+  const address = document.getElementById('contactAddress').value.trim();
+  STATE.contacts = STATE.contacts || [];
+  const isEdit = !!editingContactId;
+  let prevSnapshot = null;
+  let contact;
+  if(isEdit){
+    contact = STATE.contacts.find(c=>c.id===editingContactId);
+    if(!contact) return;
+    prevSnapshot = {...contact};
+    contact.name = name; contact.type = type; contact.phone = phone; contact.address = address;
+  } else {
+    contact = {id:genContactId(), name, type, phone, address};
+    STATE.contacts.push(contact);
+  }
+  const ok = await persist();
+  if(ok){
+    closeContactForm();
+    renderContactsList();
+    refreshContactDatalists();
+    showToast(isEdit ? t('msgContactUpdated') : t('msgContactAdded'));
+  } else {
+    if(isEdit && prevSnapshot){ Object.assign(contact, prevSnapshot); }
+    else { STATE.contacts = STATE.contacts.filter(c=>c.id!==contact.id); }
+    showToast(t('errDeleteRetry'));
+  }
+}
+async function deleteContact(id){
+  const contact = (STATE.contacts||[]).find(c=>c.id===id);
+  if(!contact) return;
+  if(!(await customConfirm(t('confirmDeleteContactPrefix')+contact.name+t('confirmDeleteContactSuffix')))) return;
+  const idx = STATE.contacts.indexOf(contact);
+  STATE.contacts.splice(idx,1);
+  const ok = await persist();
+  if(ok){
+    renderContactsList();
+    refreshContactDatalists();
+    showToast(t('msgContactDeleted'));
+  } else {
+    STATE.contacts.splice(idx,0,contact);
+    showToast(t('errDeleteRetry'));
+  }
+}
+// Keeps the two note forms' supplier/customer suggestion lists and "unknown name" hints in sync
+// with the contacts list, after every add/edit/delete and once on login. (Despite the name, this
+// no longer touches a native <datalist> — see the contact-combo block below — but every existing
+// call site still just wants "the contacts-dependent bits of the UI refreshed".)
+function refreshContactDatalists(){
+  ['bi','bo'].forEach(prefix=>{
+    const listEl = document.getElementById(CONTACT_COMBO_LIST_ID[prefix]);
+    if(listEl && listEl.classList.contains('open')) filterContactCombo(prefix);
+    checkContactHint(prefix);
+  });
+}
+/* ---- Supplier/customer name combo (same look-and-feel as the item search combo above: a plain
+   text field with a live, click-or-arrow-key filtered suggestion list, not a native <datalist>) ---- */
+const CONTACT_COMBO_INPUT_ID = {bi:'biSupplierName', bo:'boLocationName'};
+const CONTACT_COMBO_LIST_ID = {bi:'biSupplierList', bo:'boLocationList'};
+const CONTACT_TYPE_BY_PREFIX = {bi:'supplier', bo:'customer'};
+const contactComboActiveIndex = {bi:-1, bo:-1};
+function contactComboMatches(prefix){
+  const type = CONTACT_TYPE_BY_PREFIX[prefix];
+  const q = (document.getElementById(CONTACT_COMBO_INPUT_ID[prefix]).value||'').trim().toLowerCase();
+  return (STATE.contacts||[])
+    .filter(c=>c.type===type && (!q || c.name.toLowerCase().includes(q)))
+    .sort((a,b)=>a.name.localeCompare(b.name,'ar'));
+}
+function renderContactComboList(prefix, contacts){
+  const listEl = document.getElementById(CONTACT_COMBO_LIST_ID[prefix]);
+  if(!listEl) return;
+  contactComboActiveIndex[prefix] = -1;
+  listEl.innerHTML = contacts.length
+    ? contacts.map(c=>`<div class="item-combo-opt" data-name="${c.name.replace(/"/g,'&quot;')}">${c.name}</div>`).join('')
+    : `<div class="item-combo-empty">${t('noResults')}</div>`;
+}
+function openContactCombo(prefix){
+  closeAllItemCombos(document.getElementById(CONTACT_COMBO_LIST_ID[prefix]));
+  renderContactComboList(prefix, contactComboMatches(prefix));
+  const listEl = document.getElementById(CONTACT_COMBO_LIST_ID[prefix]);
+  if(listEl) listEl.classList.add('open');
+}
+function filterContactCombo(prefix){
+  renderContactComboList(prefix, contactComboMatches(prefix));
+  const listEl = document.getElementById(CONTACT_COMBO_LIST_ID[prefix]);
+  if(listEl) listEl.classList.add('open');
+}
+function pickContactCombo(prefix, name){
+  const input = document.getElementById(CONTACT_COMBO_INPUT_ID[prefix]);
+  if(input) input.value = name;
+  closeAllItemCombos();
+  checkContactHint(prefix);
+}
+function onContactComboMouseDown(ev, prefix){
+  const opt = ev.target.closest('.item-combo-opt');
+  if(!opt) return;
+  ev.preventDefault(); // keep focus on the input instead of letting the click blur it first
+  pickContactCombo(prefix, opt.dataset.name);
+}
+// Moves the highlighted row in the open contact combo list by `delta` (wrapping both ends),
+// mirroring moveItemComboActive() above but against contactComboActiveIndex/its own list id.
+function moveContactComboActive(prefix, delta){
+  const listEl = document.getElementById(CONTACT_COMBO_LIST_ID[prefix]);
+  if(!listEl) return;
+  const opts = listEl.querySelectorAll('.item-combo-opt');
+  if(!opts.length){ contactComboActiveIndex[prefix] = -1; return; }
+  let idx = contactComboActiveIndex[prefix] + delta;
+  if(idx<0) idx = opts.length-1;
+  if(idx>=opts.length) idx = 0;
+  opts.forEach(o=>o.classList.remove('active'));
+  opts[idx].classList.add('active');
+  opts[idx].scrollIntoView({block:'nearest'});
+  contactComboActiveIndex[prefix] = idx;
+}
+function onContactComboKeydown(ev, prefix){
+  const listEl = document.getElementById(CONTACT_COMBO_LIST_ID[prefix]);
+  if(!listEl) return;
+  if(ev.key==='ArrowDown'){
+    ev.preventDefault();
+    if(!listEl.classList.contains('open')) openContactCombo(prefix);
+    moveContactComboActive(prefix, 1);
+  } else if(ev.key==='ArrowUp'){
+    if(!listEl.classList.contains('open')) return;
+    ev.preventDefault();
+    moveContactComboActive(prefix, -1);
+  } else if(ev.key==='Enter'){
+    ev.preventDefault();
+    if(listEl.classList.contains('open')){
+      const opts = listEl.querySelectorAll('.item-combo-opt');
+      const idx = contactComboActiveIndex[prefix]>=0 ? contactComboActiveIndex[prefix] : 0;
+      if(opts[idx] && opts[idx].dataset.name) pickContactCombo(prefix, opts[idx].dataset.name);
+    }
+    focusNextNoteField(prefix, CONTACT_COMBO_INPUT_ID[prefix]);
+  }
+}
+// Warns when the supplier name (Bulk In) or customer/location name (Bulk Out) typed into a note
+// doesn't match any saved contact of the matching type, with a button that opens the contact form
+// pre-filled with that name so the person can register them on the spot instead of leaving the note.
+function checkContactHint(prefix){
+  const inputId = prefix==='bi' ? 'biSupplierName' : 'boLocationName';
+  const hintId = prefix==='bi' ? 'biSupplierHint' : 'boLocationHint';
+  const type = prefix==='bi' ? 'supplier' : 'customer';
+  const input = document.getElementById(inputId);
+  const hint = document.getElementById(hintId);
+  if(!input || !hint) return;
+  const name = input.value.trim();
+  if(!name){ hint.innerHTML = ''; return; }
+  const exists = (STATE.contacts||[]).some(c=>c.type===type && c.name.trim()===name);
+  if(exists){ hint.innerHTML = ''; return; }
+  const msgKey = type==='supplier' ? 'contactNotFoundMsgSupplier' : 'contactNotFoundMsgCustomer';
+  hint.innerHTML = `<div class="warn-box" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span>${t(msgKey)}</span><button type="button" class="btn btn-ghost btn-sm" onclick="openContactFormFromHint('${prefix}','${type}')">${t('defineContactBtn')}</button></div>`;
+}
+// Opens the contact form on top of the still-open note modal, pre-filled with the name/type that
+// triggered the hint. Closing or saving the form returns to the note modal underneath unaffected;
+// a successful save re-runs checkContactHint() (via refreshContactDatalists) so the warning clears.
+function openContactFormFromHint(prefix, type){
+  const inputId = prefix==='bi' ? 'biSupplierName' : 'boLocationName';
+  const name = (document.getElementById(inputId).value || '').trim();
+  openContactForm();
+  document.getElementById('contactName').value = name;
+  document.getElementById('contactType').value = type;
+}
 function openWhContents(id){
   document.getElementById('whContentsPrintActions').style.display = hasPerm('warehouses','print') ? '' : 'none';
   document.getElementById('whContentsTitle').textContent = t('contentsLabel') + ': ' + whName(id);
   const rows = [];
-  orderedItems().forEach(item=>item.batches.forEach(b=>{ const qty=b.balances[id]||0; if(qty>0) rows.push({name:item.name, expiry:b.expiry||t('statusUnspecified'), qty}); }));
+  orderedItems().forEach(item=>item.batches.forEach(b=>{ const qty=b.balances[id]||0; if(qty>0) rows.push({item, name:item.name, expiry:b.expiry||t('statusUnspecified'), qty}); }));
   const head = `<tr><th>${t('item')}</th><th>${t('expiryDate')}</th><th>${t('colQty')}</th></tr>`;
-  const body = rows.map(r=>`<tr><td>${r.name}</td><td>${r.expiry}</td><td>${r.qty}</td></tr>`).join('');
+  const body = rows.map(r=>`<tr><td>${r.name}</td><td>${r.expiry}</td><td>${fmtQty(r.item, r.qty)}</td></tr>`).join('');
   document.getElementById('whContentsTable').innerHTML = head + (body || `<tr><td colspan="3" style="text-align:center;color:var(--ink-soft);">${t('noBalanceInWh')}</td></tr>`);
   document.getElementById('whContentsTable').dataset.whId = id;
   document.getElementById('whContentsOverlay').classList.add('active');
@@ -5051,10 +5583,12 @@ function buildWhContentsPrintHtml(){
 let transferRows = [];
 function openTransferModal(){
   liveNoteSession.tr = null;
+  noteCommitInFlight.tr = false;
+  const trCommitBtn = document.getElementById('transferCommitBtn'); if(trCommitBtn) trCommitBtn.disabled = false;
   document.getElementById('trItemSearch').value = '';
   document.getElementById('trItem').innerHTML = itemOptionsHtml();
   onTransferItemChange();
-  document.getElementById('trQty').value='';
+  document.getElementById('trQty').value=''; document.getElementById('trQtyExtra').value='';
   document.getElementById('trRecipientName').value = (editingNoteMeta && editingNoteMeta.type==='transfer' && editingNoteBackup) ? (editingNoteBackup.recipient||'') : '';
   renderTransferTable();
   updateEditingBanner('tr');
@@ -5087,14 +5621,15 @@ function addTransferRow(){
   const to = document.getElementById('trTo').value;
   const enteredQty = parseFloat(document.getElementById('trQty').value);
   const unitChoice = itemHasUnits(item) ? document.getElementById('trUnit').value : 'u2';
+  const extraQty = readExtraQty('tr', item, unitChoice);
   if(!item || !enteredQty || enteredQty<=0){ showToast(t('errSelectItemPkgQty')); return; }
   if(from===to){ showToast(t('errChooseDiffWarehouses')); return; }
-  const qty = toBaseQty(item, enteredQty, unitChoice);
+  const qty = toBaseQty(item, enteredQty, unitChoice) + extraQty;
   const {alloc} = computeFefoAllocation(item, from, qty);
   if(!alloc.length){ showToast(t('errNoBalanceForItemInWhPrefix')+whName(from)); return; }
   const expiry = formatFefoExpiryLabel(alloc);
-  transferRows.push({itemId:item.id, itemName:item.name, fromWh:from, fromLabel:whName(from), toWh:to, toLabel:whName(to), qty, enteredQty, unitChoice, expiry});
-  document.getElementById('trQty').value='';
+  transferRows.push({itemId:item.id, itemName:item.name, fromWh:from, fromLabel:whName(from), toWh:to, toLabel:whName(to), qty, enteredQty, unitChoice, extraQty, expiry});
+  document.getElementById('trQty').value=''; document.getElementById('trQtyExtra').value='';
   renderTransferTable();
 }
 function removeTransferRow(i){ transferRows.splice(i,1); renderTransferTable(); }
@@ -5102,8 +5637,9 @@ function updateTransferRow(i, field, value){
   const row = transferRows[i];
   if(!row) return;
   const item = STATE.items.find(x=>x.id===row.itemId);
-  if(field==='qty'){ row.enteredQty = parseFloat(value)||0; row.qty = toBaseQty(item, row.enteredQty, row.unitChoice); }
-  else if(field==='unit'){ row.unitChoice = value; row.qty = toBaseQty(item, row.enteredQty, row.unitChoice); }
+  if(field==='qty'){ row.enteredQty = parseFloat(value)||0; row.qty = rowBaseQty(item, row); }
+  else if(field==='unit'){ row.unitChoice = value; if(value!=='u1') row.extraQty = 0; row.qty = rowBaseQty(item, row); }
+  else if(field==='extraQty'){ row.extraQty = parseFloat(value)||0; row.qty = rowBaseQty(item, row); }
   if(item){
     const {alloc} = computeFefoAllocation(item, row.fromWh, row.qty);
     row.expiry = formatFefoExpiryLabel(alloc);
@@ -5116,7 +5652,7 @@ function renderTransferTable(){
     const item = STATE.items.find(x=>x.id===r.itemId);
     const unitCell = itemHasUnits(item) ? `<select onchange="updateTransferRow(${i},'unit',this.value)" style="border:1px solid var(--line);border-radius:6px;padding:4px 4px;font-family:inherit;font-size:11.5px;margin-inline-start:4px;">${unitSelectHtml(item, r.unitChoice)}</select>` : '';
     return `<tr><td>${i+1}</td><td>${r.itemName}</td><td>${r.fromLabel}</td><td>${r.toLabel}</td>
-    <td style="white-space:nowrap;"><input type="number" step="0.01" value="${r.enteredQty}" onchange="updateTransferRow(${i},'qty',this.value)" style="width:64px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:inherit;font-size:12.5px;">${unitCell}</td>
+    <td style="white-space:nowrap;"><input type="text" inputmode="decimal" lang="en" oninput="this.value=toLatinDigits(this.value)" step="0.01" value="${r.enteredQty}" onchange="updateTransferRow(${i},'qty',this.value)" style="width:64px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:inherit;font-size:12.5px;">${unitCell}${extraQtyCellHtml('updateTransferRow',i,item,r)}</td>
     <td>${r.expiry||''}</td><td class="rm" onclick="removeTransferRow(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></td></tr>`;
   }).join('');
   document.getElementById('trTable').innerHTML = head + (rows || `<tr><td colspan="7" style="text-align:center;color:var(--ink-soft);">${t('noRows')}</td></tr>`);
@@ -5140,6 +5676,11 @@ function printTransferAndClear(){
 }
 async function commitTransfer(){
   if(!transferRows.length){ showToast(t('errTableEmpty')); return; }
+  if(noteCommitInFlight.tr){ showToast(t('msgSaveInProgress')); return; }
+  noteCommitInFlight.tr = true;
+  const commitBtn = document.getElementById('transferCommitBtn');
+  if(commitBtn) commitBtn.disabled = true;
+  try{
   const recipient = document.getElementById('trRecipientName').value.trim();
   const isApproving = !!(editingNoteMeta && editingNoteMeta.approving);
   const continuing = !editingNoteMeta && !!liveNoteSession.tr;
@@ -5227,6 +5768,10 @@ async function commitTransfer(){
   }
   updateEditingBanner('tr');
   renderDashboard(); renderItems();
+  } finally {
+    noteCommitInFlight.tr = false;
+    if(commitBtn) commitBtn.disabled = false;
+  }
 }
 
 /* ============ Demo quick-login ============ */
