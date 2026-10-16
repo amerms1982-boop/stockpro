@@ -4637,7 +4637,7 @@ async function saveOpeningBalances(){
     serial, type:'opening',
     createdAt: isEditingOpening ? editingNoteMeta.createdAt : new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    user: userName || t('unknownUser'),
+    user: (editingNoteBackup && editingNoteBackup.user) || userName || t('unknownUser'),
     rows: Object.values(rowsMap),
     appliedAllocations, txIds
   };
@@ -4962,7 +4962,7 @@ async function commitBulkIn(){
       serial, type:'in', status:'pending',
       createdAt,
       updatedAt: new Date().toISOString(),
-      user: userName || t('unknownUser'),
+      user: (editingNoteBackup && editingNoteBackup.user) || userName || t('unknownUser'),
       supplier, address, recipient,
       rows: bulkInRows.map(r=>({...r})),
       appliedAllocations: [], txIds: []
@@ -5001,12 +5001,13 @@ async function commitBulkIn(){
     serial, type:'in',
     createdAt,
     updatedAt: new Date().toISOString(),
-    user: isApproving ? ((editingNoteBackup && editingNoteBackup.user) || t('unknownUser')) : (userName || t('unknownUser')),
+    user: (editingNoteBackup && editingNoteBackup.user) || userName || t('unknownUser'),
     supplier, address, recipient,
     rows: bulkInRows.map(r=>({...r})),
     appliedAllocations, txIds
   };
   if(isApproving){ note.approvedBy = userName || t('unknownUser'); note.approvedAt = new Date().toISOString(); }
+  else if(editingNoteBackup && editingNoteBackup.approvedBy){ note.approvedBy = editingNoteBackup.approvedBy; note.approvedAt = editingNoteBackup.approvedAt; }
   STATE.notes.unshift(note);
   const wasEditing = editingNoteMeta;
   editingNoteMeta = null; editingNoteBackup = null;
@@ -5154,7 +5155,7 @@ async function commitBulkOut(){
       serial, type:'out', status:'pending',
       createdAt,
       updatedAt: new Date().toISOString(),
-      user: userName || t('unknownUser'),
+      user: (editingNoteBackup && editingNoteBackup.user) || userName || t('unknownUser'),
       location, address, recipient,
       rows: bulkOutRows.map(r=>({...r})),
       appliedAllocations: [], txIds: []
@@ -5193,12 +5194,13 @@ async function commitBulkOut(){
     serial, type:'out',
     createdAt,
     updatedAt: new Date().toISOString(),
-    user: isApproving ? ((editingNoteBackup && editingNoteBackup.user) || t('unknownUser')) : (userName || t('unknownUser')),
+    user: (editingNoteBackup && editingNoteBackup.user) || userName || t('unknownUser'),
     location, address, recipient,
     rows: bulkOutRows.map(r=>({...r})),
     appliedAllocations, txIds
   };
   if(isApproving){ note.approvedBy = userName || t('unknownUser'); note.approvedAt = new Date().toISOString(); }
+  else if(editingNoteBackup && editingNoteBackup.approvedBy){ note.approvedBy = editingNoteBackup.approvedBy; note.approvedAt = editingNoteBackup.approvedAt; }
   STATE.notes.unshift(note);
   const wasEditing = editingNoteMeta;
   editingNoteMeta = null; editingNoteBackup = null;
@@ -5556,6 +5558,23 @@ function doPrint(html){
     showToast(t('errPrintFailed'));
   }
 }
+// "Created by" / "Approved by" lines for the live preview, taken from the note being edited when there is one.
+function previewMetaHtml(which){
+  const live = liveNoteSession[which];
+  const b = editingNoteBackup || (live && STATE.notes.find(n=>n.id===live.id)) || null;
+  const creator = (b && b.user) || userName || '';
+  let h = creator ? `<div>${t('createdByLabel')}: <bdi>${creator}</bdi></div>` : '';
+  if(b && b.approvedBy){
+    const d = b.approvedAt ? new Date(b.approvedAt).toLocaleString(appLocale(),{dateStyle:'medium',timeStyle:'short'}) : '';
+    h += `<div>${t('approvedByLabel')}: <bdi>${b.approvedBy}</bdi></div>` + (d ? `<div>${t('approvalDateLabel')}: <bdi>${d}</bdi></div>` : '');
+  }
+  return h;
+}
+// Date shown in the preview: the original date when editing / continuing a saved note, otherwise now.
+function previewNoteDate(which){
+  const iso = editingNoteMeta ? editingNoteMeta.createdAt : (liveNoteSession[which] && liveNoteSession[which].createdAt);
+  return new Date(iso || Date.now()).toLocaleString(appLocale(),{dateStyle:'medium',timeStyle:'short'});
+}
 function buildBulkPrintHtml(which){
   let titleBase, tableHtml, extraLine='', recipientLine='';
   if(which==='bi'){
@@ -5580,8 +5599,8 @@ function buildBulkPrintHtml(which){
   // already-saved one), show its real serial in the title; before that first save there isn't one yet.
   const serial = editingNoteMeta ? editingNoteMeta.serial : (liveNoteSession[which] ? liveNoteSession[which].serial : null);
   const title = serial ? `${titleBase} ${t('numberLabel')} ${serial}` : titleBase;
-  const dateStr = new Date().toLocaleString(appLocale(),{dateStyle:'medium',timeStyle:'short'});
-  return `<h2>${title}</h2><div>${t('dateLabel')}: <bdi>${dateStr}</bdi></div>${extraLine}<br>${tableHtml}${recipientLine}`;
+  const dateStr = previewNoteDate(which);
+  return `<h2>${title}</h2><div>${t('dateLabel')}: <bdi>${dateStr}</bdi></div>${extraLine}${previewMetaHtml(which)}<br>${tableHtml}${recipientLine}`;
 }
 
 /* ============ WAREHOUSES MANAGEMENT ============ */
@@ -5994,10 +6013,10 @@ function newTransferTable(){
 function buildTransferPrintHtml(){
   const serial = editingNoteMeta ? editingNoteMeta.serial : (liveNoteSession.tr ? liveNoteSession.tr.serial : null);
   const title = serial ? `${t('transferTitle')} ${t('numberLabel')} ${serial}` : t('transferTitle');
-  const dateStr = new Date().toLocaleString(appLocale(),{dateStyle:'medium',timeStyle:'short'});
+  const dateStr = previewNoteDate('tr');
   const recipient = document.getElementById('trRecipientName').value.trim();
   const recipientLine = buildRecipientLineHtml(recipient);
-  return `<h2>${title}</h2><div>${t('dateLabel')}: <bdi>${dateStr}</bdi></div><br>${buildNoteRowsTableHtml('transfer', transferRows)}${recipientLine}`;
+  return `<h2>${title}</h2><div>${t('dateLabel')}: <bdi>${dateStr}</bdi></div>${previewMetaHtml('tr')}<br>${buildNoteRowsTableHtml('transfer', transferRows)}${recipientLine}`;
 }
 function printTransferAndClear(){
   doPrint(buildTransferPrintHtml());
@@ -6023,7 +6042,7 @@ async function commitTransfer(){
       serial, type:'transfer', status:'pending',
       createdAt,
       updatedAt: new Date().toISOString(),
-      user: userName || t('unknownUser'),
+      user: (editingNoteBackup && editingNoteBackup.user) || userName || t('unknownUser'),
       recipient,
       rows: transferRows.map(r=>({...r})),
       appliedAllocations: [], txIds: []
@@ -6068,12 +6087,13 @@ async function commitTransfer(){
     serial, type:'transfer',
     createdAt,
     updatedAt: new Date().toISOString(),
-    user: isApproving ? ((editingNoteBackup && editingNoteBackup.user) || t('unknownUser')) : (userName || t('unknownUser')),
+    user: (editingNoteBackup && editingNoteBackup.user) || userName || t('unknownUser'),
     recipient,
     rows: transferRows.map(r=>({...r})),
     appliedAllocations, txIds
   };
   if(isApproving){ note.approvedBy = userName || t('unknownUser'); note.approvedAt = new Date().toISOString(); }
+  else if(editingNoteBackup && editingNoteBackup.approvedBy){ note.approvedBy = editingNoteBackup.approvedBy; note.approvedAt = editingNoteBackup.approvedAt; }
   STATE.notes.unshift(note);
   const wasEditing = editingNoteMeta;
   editingNoteMeta = null; editingNoteBackup = null;
