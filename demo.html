@@ -3440,7 +3440,8 @@ function enterApp(skipRecoveryCheck){
   syncItemSortMenu();
   syncItemViewMenu();
   refreshContactDatalists();
-  renderDashboard(); renderItems(); renderLog();
+  renderDashboard(); renderItems();
+  setTimeout(()=>{ renderLog(); }, 0);
   if(!skipRecoveryCheck && currentUser.role==='admin' && !hasRecoveryCode()){
     setTimeout(async ()=>{
       const yes = await customConfirm(t('askCreateRecoveryCode'));
