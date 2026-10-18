@@ -184,20 +184,17 @@
   .panel .cap li .ico{width:16px;height:16px;color:#5EEAD4;}
 
   /* mobile */
-  .mobile-sec{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.75fr);gap:32px;align-items:center;min-height:calc(100svh - 72px);}
+  .mobile-sec{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px;align-items:center;min-height:calc(100svh - 72px);}
   @media(max-width:900px){.mobile-sec{grid-template-columns:1fr;min-height:0;}}
-  .phones{display:flex;justify-content:center;align-items:flex-start;gap:clamp(8px,1.6vw,22px);}
-  .phone{width:min(300px,32%,calc((100svh - 190px) * .46));border-radius:38px;background:#0F172A;padding:10px;box-shadow:var(--shadow-lg);position:relative;}
-  .phone::before{content:"";position:absolute;top:18px;left:50%;transform:translateX(-50%);width:70px;height:18px;border-radius:12px;background:#0F172A;z-index:2;}
+  .phones{display:flex;justify-content:center;align-items:flex-end;gap:clamp(10px,2vw,24px);}
+  .phone{border-radius:38px;background:#0F172A;padding:10px;box-shadow:var(--shadow-lg);position:relative;flex:none;}
+  .phone::before{content:"";position:absolute;top:18px;left:50%;transform:translateX(-50%);width:28%;height:3.2%;border-radius:12px;background:#0F172A;z-index:2;}
   .phone img{display:block;border-radius:29px;width:100%;height:auto;}
-  .phone:nth-child(2){margin-top:clamp(20px,4vh,48px);}
-  @media(max-width:700px){
-    .phones{justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;padding:6px 4px 24px;margin:0 -22px;padding-inline:22px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-    .phones::-webkit-scrollbar{display:none;}
-    .phone{flex:none;width:min(250px,66vw,calc((100svh - 170px) * .46));scroll-snap-align:center;padding:8px;border-radius:32px;}
-    .phone img{border-radius:25px;}
-    .phone:nth-child(2){margin-top:0;}
-  }
+  .phone.big{width:min(300px,46%,calc((100svh - 190px) * .46));}
+  .phone.small{width:min(190px,30%,calc((100svh - 190px) * .29));padding:7px;border-radius:28px;margin-bottom:clamp(10px,3vh,34px);}
+  .phone.small img{border-radius:21px;}
+  @media(max-width:900px){.phone.big{width:min(300px,56%);} .phone.small{width:min(190px,34%);}}
+  @media(max-width:520px){.phone{padding:6px;border-radius:24px;} .phone img{border-radius:18px;} .phone.small{padding:5px;border-radius:20px;} .phone.small img{border-radius:15px;}}
   .check-list{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:12px;}
   .check-list li{display:flex;gap:12px;align-items:flex-start;}
   .check-list .ci{width:28px;height:28px;border-radius:8px;background:var(--teal-soft);color:var(--teal);display:grid;place-items:center;flex:none;margin-top:2px;}
@@ -487,9 +484,8 @@
       </ul>
     </div>
     <div class="phones rv">
-      <div class="phone"><img src="img-mobile_dash.webp" alt="لوحة القيادة على الموبايل" width="585" height="1266" loading="lazy"></div>
-      <div class="phone"><img src="img-mobile_items.webp" alt="الأصناف على الموبايل" width="585" height="1266" loading="lazy"></div>
-      <div class="phone"><img src="img-mobile_note.webp" alt="إذن صرف على الموبايل" width="585" height="1266" loading="lazy"></div>
+      <div class="phone big"><img src="img-mobile_note.webp" alt="إذن صرف على الموبايل" width="585" height="1266" loading="lazy"></div>
+      <div class="phone small"><img src="img-mobile_dash.webp" alt="لوحة القيادة على الموبايل" width="585" height="1266" loading="lazy"></div>
     </div>
   </div>
 </section>
