@@ -168,12 +168,12 @@
   /* mobile */
   .mobile-sec{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;}
   @media(max-width:900px){.mobile-sec{grid-template-columns:1fr;}}
-  .phones{display:flex;justify-content:center;gap:22px;}
-  .phone{width:230px;border-radius:38px;background:#0F172A;padding:10px;box-shadow:var(--shadow-lg);position:relative;}
+  .phones{display:flex;justify-content:center;gap:14px;}
+  .phone{width:min(190px,31%);border-radius:38px;background:#0F172A;padding:10px;box-shadow:var(--shadow-lg);position:relative;}
   .phone::before{content:"";position:absolute;top:18px;left:50%;transform:translateX(-50%);width:70px;height:18px;border-radius:12px;background:#0F172A;z-index:2;}
   .phone img{border-radius:29px;width:100%;}
   .phone:nth-child(2){margin-top:48px;}
-  @media(max-width:520px){.phone{width:46%;} .phone:nth-child(2){margin-top:30px;}}
+  @media(max-width:520px){.phones{gap:8px;} .phone{width:31%;padding:6px;border-radius:24px;} .phone:nth-child(2){margin-top:30px;}}
   .check-list{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:12px;}
   .check-list li{display:flex;gap:12px;align-items:flex-start;}
   .check-list .ci{width:28px;height:28px;border-radius:8px;background:var(--teal-soft);color:var(--teal);display:grid;place-items:center;flex:none;margin-top:2px;}
@@ -375,8 +375,8 @@
       <div class="feat star rv"><div class="fi"><svg class="ico"><use href="#i-sort"/></svg></div><h3>صرف تلقائي بالأقرب انتهاءً (FEFO)</h3><p>بتكتب الصنف والكمية بس، والنظام يصرف من الأقرب انتهاءً للأبعد، ويستبعد المنتهي تلقائيًا.</p></div>
       <div class="feat rv"><div class="fi o"><svg class="ico"><use href="#i-alert"/></svg></div><h3>تنبيهات الصلاحية</h3><p>لوحة قيادة بتوريك المنتهي والقريب من الانتهاء، مرتبة حسب الأولوية ومعاها الرصيد في كل مخزن.</p></div>
       <div class="feat rv"><div class="fi t"><svg class="ico"><use href="#i-swap"/></svg></div><h3>مخازن متعددة ونقل بينها</h3><p>ضيف مخازن بلا حدود، واعرف رصيد كل مخزن لوحده، وانقل البضاعة بإذن نقل مسجّل.</p></div>
-      <div class="feat rv"><div class="fi t"><svg class="ico"><use href="#i-file"/></svg></div><h3>أذون إضافة وصرف ونقل</h3><p>أذون مرقّمة بأسماء الموردين والعملاء والمستلمين، تقدر ترجعلها وتعدّلها أو تلغيها في أي وقت.</p></div>
-      <div class="feat rv"><div class="fi am"><svg class="ico"><use href="#i-print"/></svg></div><h3>طباعة ومعاينة</h3><p>اطبع الإذن أو محتويات المخزن أو حركة الصنف أو تقرير النواقص بشكل رسمي ونضيف.</p></div>
+      <div class="feat rv"><div class="fi t"><svg class="ico"><use href="#i-file"/></svg></div><h3>أذون إضافة وصرف ونقل</h3><p>أذون مرقّمة بأسماء الموردين والعملاء والعناوين والمستلمين، وفي آخر كل جدول إجمالي الكمية. تقدر ترجعلها وتعدّلها أو تلغيها بأمان، ومين أنشأها ومين اعتمدها بيظهر على الإذن.</p></div>
+      <div class="feat rv"><div class="fi am"><svg class="ico"><use href="#i-print"/></svg></div><h3>طباعة ومعاينة</h3><p>اطبع الإذن أو محتويات المخزن أو حركة الصنف أو تقرير النواقص بشكل رسمي: خلفية بيضاء وخطوط سودا واضحة، وكل تاريخ صلاحية في سطر بكميته.</p></div>
       <div class="feat rv"><div class="fi o"><svg class="ico"><use href="#i-trend"/></svg></div><h3>حد الطلب وتقرير النواقص</h3><p>حدد حد أدنى لكل صنف، والنظام يطلّعلك قايمة بالأصناف اللي محتاجة تتطلب.</p></div>
       <div class="feat rv"><div class="fi t"><svg class="ico"><use href="#i-users"/></svg></div><h3>مستخدمين وصلاحيات</h3><p>حساب لكل موظف، وتحدد لكل واحد يقدر يشوف ويضيف ويعدّل ويحذف ويطبع إيه بالظبط.</p></div>
       <div class="feat rv"><div class="fi am"><svg class="ico"><use href="#i-hourglass"/></svg></div><h3>دورة موافقات</h3><p>أذونات أمين المخزن ممكن تستنى موافقة المدير قبل ما تأثر على الرصيد، ويقدر يراجعها ويعدّلها أو يرفضها.</p></div>
@@ -384,6 +384,9 @@
       <div class="feat rv"><div class="fi o"><svg class="ico"><use href="#i-palette"/></svg></div><h3>بهوية شركتك</h3><p>اسم شركتك واللوجو والأيقونة وصورة الخلفية، ولون كل زرار لوحده — من لوحة التحكم.</p></div>
       <div class="feat rv"><div class="fi t"><svg class="ico"><use href="#i-moon"/></svg></div><h3>عربي / إنجليزي · فاتح / داكن</h3><p>كل مستخدم يختار اللغة والمظهر اللي يريّحه، والاختيار بيتحفظ على جهازه.</p></div>
       <div class="feat rv"><div class="fi am"><svg class="ico"><use href="#i-sync"/></svg></div><h3>سحابي ومتزامن</h3><p>كل الأجهزة شايفة نفس البيانات في نفس اللحظة، من المكتب أو المخزن أو من برّه.</p></div>
+      <div class="feat rv"><div class="fi t"><svg class="ico"><use href="#i-truck"/></svg></div><h3>دفتر الأشخاص: موردين وعملاء</h3><p>سجّل الاسم والتليفون والعنوان مرة واحدة، وبعدها بيتعبّوا لوحدهم في الإذن. وكل إضافة أو تعديل بيتسجّل في سجل الحركات.</p></div>
+      <div class="feat rv"><div class="fi am"><svg class="ico"><use href="#i-sparkle"/></svg></div><h3>اكتب وهو يختار</h3><p>في الصنف والمورد والعميل اكتب جزء من الاسم والقايمة بتفلتر على طول، وكمان سهم لفتح كل الاختيارات.</p></div>
+      <div class="feat rv"><div class="fi o"><svg class="ico"><use href="#i-phone"/></svg></div><h3>متجاوب مع كل الشاشات</h3><p>الجداول بتتحرك أفقيًا والحقول بتترتب في عمود واحد على الموبايل، فتشتغل بنفس الراحة على التليفون.</p></div>
     </div>
   </div>
 </section>
@@ -394,12 +397,12 @@
     <div class="rv">
       <span class="eyebrow">الصرف الذكي</span>
       <h2>أمين المخزن مش محتاج يدوّر على تاريخ الصلاحية</h2>
-      <p>لما تعمل إذن صرف، بتختار الصنف والكمية والمخزن بس. النظام بيستبعد أي باتش منتهي الصلاحية، ويرتّب الباقي حسب تاريخ الانتهاء، ويسحب من الأقرب الأول. ولو الكمية أكبر من الباتش بيكمّل من اللي بعده تلقائيًا.</p>
+      <p>لما تعمل إذن صرف، بتختار الصنف والكمية والمخزن بس. النظام بيستبعد أي باتش منتهي الصلاحية، ويرتّب الباقي حسب تاريخ الانتهاء، ويسحب من الأقرب الأول. ولو الكمية أكبر من الباتش بيكمّل من اللي بعده تلقائيًا، وفي الإذن كل تاريخ صلاحية بيظهر في سطر لوحده بكميته.</p>
       <ul class="check-list">
         <li><span class="ci"><svg class="ico"><use href="#i-check"/></svg></span><div><b>تقليل الهالك</b><span>البضاعة القديمة بتخرج الأول، فبتقلّ الكميات اللي بتنتهي في المخزن.</span></div></li>
         <li><span class="ci"><svg class="ico"><use href="#i-check"/></svg></span><div><b>المنتهي عمره ما يتصرف</b><span>الباتشات المنتهية بتتستبعد من الصرف تلقائيًا، وتقدر تنقلها لمخزن المرتجعات بإذن نقل.</span></div></li>
         <li><span class="ci"><svg class="ico"><use href="#i-check"/></svg></span><div><b>من غير أخطاء بشرية</b><span>مفيش اعتماد على ذاكرة الموظف أو قراءة التاريخ من على الكرتونة.</span></div></li>
-        <li><span class="ci"><svg class="ico"><use href="#i-check"/></svg></span><div><b>شفافية كاملة</b><span>الإذن المطبوع بيوضّح تاريخ صلاحية الكمية اللي خرجت.</span></div></li>
+        <li><span class="ci"><svg class="ico"><use href="#i-check"/></svg></span><div><b>شفافية كاملة</b><span>الإذن المطبوع بيوضّح كل تاريخ صلاحية والكمية اللي خرجت منه في سطر مستقل، وفي آخر الجدول إجمالي الكمية.</span></div></li>
       </ul>
     </div>
     <div class="batches rv" id="fefoDemo">
@@ -409,6 +412,7 @@
       <div class="b-row first"><span class="n">2</span><div><div class="exp">صلاحية 05/2027 <small>متاح 140 كرتونة</small></div><div class="bar"><b data-w="14%"></b></div></div><span class="take">سحب 20</span></div>
       <div class="b-row skip"><span class="n">3</span><div><div class="exp">صلاحية 02/2028 <small>متاح 90 كرتونة</small></div><div class="bar"><b data-w="0%"></b></div></div><span class="take" style="color:var(--muted)">لم يُمس</span></div>
       <div class="legend"><span><i style="background:var(--teal)"></i>الكمية المسحوبة من الباتش</span><span><i style="background:#E2E8F0"></i>الباقي في المخزن</span></div>
+      <div style="margin-top:14px;padding:12px 14px;border:1px dashed var(--line);border-radius:12px;font-size:13.5px;color:var(--ink-2);background:#F8FAFC"><b style="color:var(--ink)">في الإذن المطبوع:</b> سطر <b>40</b> بصلاحية 11/2026، وسطر <b>20</b> بصلاحية 05/2027 — الإجمالي <b>60</b>.</div>
     </div>
   </div>
 </section>
@@ -422,7 +426,7 @@
       <p>الموظف بيتعلّم النظام في دقايق، لأن كل شاشة بتعمل حاجة واحدة وبوضوح.</p>
     </div>
     <div class="steps">
-      <div class="step rv"><h3>سجّل أصنافك</h3><p>اسم الصنف ووحدتي القياس (زي كرتونة وعبوة) وصورته وحد الطلب. وممكن نسجّلهالك إحنا من ملفاتك الحالية.</p></div>
+      <div class="step rv"><h3>سجّل أصنافك</h3><p>اسم الصنف ووحدة القياس أو وحدتين (زي كرتونة وعبوة) وصورته وحد الطلب. وممكن نسجّلهالك إحنا من ملفاتك الحالية.</p></div>
       <div class="step rv"><h3>استلم بإذن إضافة</h3><p>كل استلام بإذن فيه المورد والكمية والمخزن وتاريخ الصلاحية، فالرصيد يزيد فورًا.</p></div>
       <div class="step rv"><h3>اصرف بإذن صرف</h3><p>اختار الصنف والكمية والعميل، والنظام يصرف من الباتش الأقرب انتهاءً ويطبع الإذن.</p></div>
       <div class="step rv"><h3>تابع وخد قرارك</h3><p>تنبيهات الصلاحية والنواقص والسجل الكامل قدامك على لوحة القيادة في أي وقت.</p></div>
@@ -453,14 +457,15 @@
       <h2 style="font-size:clamp(26px,3.2vw,36px);font-weight:900">المخزن في جيبك</h2>
       <p style="color:var(--ink-2)">النظام بيشتغل من المتصفح على الكمبيوتر والتابلت والموبايل، ومش محتاج تنزّل أي تطبيق. أمين المخزن يسجّل الإذن من جوه المخزن، والمدير يتابع ويوافق من مكتبه أو من بيته.</p>
       <ul class="check-list">
-        <li><span class="ci"><svg class="ico"><use href="#i-check"/></svg></span><div><b>تصميم متجاوب</b><span>الشاشات بتترتب لوحدها حسب حجم الجهاز.</span></div></li>
+        <li><span class="ci"><svg class="ico"><use href="#i-check"/></svg></span><div><b>تصميم متجاوب</b><span>الجداول بتتحرك أفقيًا والحقول بتترتب في عمود واحد، فالإذن يتسجّل من الموبايل بسهولة.</span></div></li>
         <li><span class="ci"><svg class="ico"><use href="#i-check"/></svg></span><div><b>بيانات لحظية</b><span>أي إذن بيتسجّل بيظهر على كل الأجهزة فورًا.</span></div></li>
         <li><span class="ci"><svg class="ico"><use href="#i-check"/></svg></span><div><b>اختصار على الشاشة الرئيسية</b><span>تقدر تضيفه على شاشة الموبايل ويفتح زي أي تطبيق.</span></div></li>
       </ul>
     </div>
     <div class="phones rv">
-      <div class="phone"><img src="img-mobile_dash.webp" alt="لوحة القيادة على الموبايل" width="585" height="1199" loading="lazy"></div>
-      <div class="phone"><img src="img-mobile_items.webp" alt="الأصناف على الموبايل" width="585" height="1267" loading="lazy"></div>
+      <div class="phone"><img src="img-mobile_dash.webp" alt="لوحة القيادة على الموبايل" width="585" height="1200" loading="lazy"></div>
+      <div class="phone"><img src="img-mobile_items.webp" alt="الأصناف على الموبايل" width="585" height="1200" loading="lazy"></div>
+      <div class="phone"><img src="img-mobile_note.webp" alt="إذن صرف على الموبايل" width="585" height="1200" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -504,7 +509,7 @@
     <div class="trust" style="margin-top:56px">
       <div class="tcard rv"><div class="fi t"><svg class="ico"><use href="#i-cloud"/></svg></div><h3>قاعدة بيانات سحابية</h3><p>بياناتك مش على جهاز واحد ممكن يبوظ أو يتسرق.</p></div>
       <div class="tcard rv"><div class="fi o"><svg class="ico"><use href="#i-lock"/></svg></div><h3>اتصال مؤمّن</h3><p>الاتصال مشفّر (HTTPS)، وقاعدة البيانات محمية بقواعد أمان.</p></div>
-      <div class="tcard rv"><div class="fi am"><svg class="ico"><use href="#i-shield"/></svg></div><h3>حساب لكل موظف</h3><p>كل واحد بحسابه وصلاحياته، وكل حركة متسجّلة باسمه.</p></div>
+      <div class="tcard rv"><div class="fi am"><svg class="ico"><use href="#i-shield"/></svg></div><h3>حساب لكل موظف</h3><p>كل واحد بحسابه وصلاحياته، وكل حركة متسجّلة باسمه، والحساب بيقفل لوحده بعد 15 دقيقة من غير نشاط.</p></div>
       <div class="tcard rv"><div class="fi t"><svg class="ico"><use href="#i-sync"/></svg></div><h3>تحديثات تلقائية</h3><p>أي تحسين أو ميزة جديدة بتوصل لكل الأجهزة من غير ما تعمل حاجة.</p></div>
     </div>
   </div>
@@ -542,6 +547,9 @@
       <details class="rv"><summary>عندي أصناف مالهاش تاريخ صلاحية، ينفع؟<span class="pm"><svg class="ico" style="width:14px;height:14px"><use href="#i-plus"/></svg></span></summary><p>أيوه. تاريخ الصلاحية اختياري في إذن الإضافة، والأصناف اللي من غير تاريخ بتتعامل عادي في الأرصدة والصرف والنقل.</p></details>
       <details class="rv"><summary>أقدر أمنع موظف من الحذف أو التعديل؟<span class="pm"><svg class="ico" style="width:14px;height:14px"><use href="#i-plus"/></svg></span></summary><p>أيوه. لكل مستخدم بتحدد صلاحيات العرض والإضافة والتعديل والحذف والطباعة لكل قسم لوحده، وممكن تخلي أذوناته تستنى موافقتك قبل ما تتنفّذ.</p></details>
       <details class="rv"><summary>ينفع يبقى باسم شركتي ولوجوها؟<span class="pm"><svg class="ico" style="width:14px;height:14px"><use href="#i-plus"/></svg></span></summary><p>أيوه، النسخة بتتسلّم بهويتك كاملة، وتقدر تغيّر اللوجو والخلفية والألوان بعدين بنفسك من لوحة التحكم.</p></details>
+      <details class="rv"><summary>أقدر أسجّل الموردين والعملاء مرة واحدة؟<span class="pm"><svg class="ico" style="width:14px;height:14px"><use href="#i-plus"/></svg></span></summary><p>أيوه. من زرار «الأشخاص» بتسجّل الاسم والتليفون والعنوان ونوعه (مورد أو عميل)، وبعدها بتختاره في الإذن وبياناته بتتعبّى لوحدها. وفي مسح البيانات تقدر تحتفظ بالأشخاص.</p></details>
+      <details class="rv"><summary>لو الكمية اتصرفت من أكتر من تاريخ صلاحية؟<span class="pm"><svg class="ico" style="width:14px;height:14px"><use href="#i-plus"/></svg></span></summary><p>النظام بيصرف من الأقرب انتهاءً ويكمّل من اللي بعده، والإذن بيعرض كل تاريخ صلاحية في سطر لوحده بكميته، وتحت الجدول إجمالي الكمية.</p></details>
+      <details class="rv"><summary>ينفع أعدّل إذن محفوظ؟<span class="pm"><svg class="ico" style="width:14px;height:14px"><use href="#i-plus"/></svg></span></summary><p>أيوه. بتفتح الإذن من «الأذون المحفوظة» وتعدّله، والنظام بيرجّع أثر القديم ويسجّل الجديد بأمان. تاريخ الإذن الأصلي بيفضل زي ما هو، واسم اللي أنشأه واللي اعتمده بيظهر في المعاينة والطباعة.</p></details>
       <details class="rv"><summary>ينفع أطبع الأذون والتقارير؟<span class="pm"><svg class="ico" style="width:14px;height:14px"><use href="#i-plus"/></svg></span></summary><p>أيوه. أذون الإضافة والصرف والنقل، ومحتويات المخزن، وحركة كل صنف، وتقرير النواقص — كلها ليها معاينة قبل الطباعة.</p></details>
       <details class="rv"><summary>البيانات اللي في النسخة التجريبية حقيقية؟<span class="pm"><svg class="ico" style="width:14px;height:14px"><use href="#i-plus"/></svg></span></summary><p>لا، كلها بيانات وهمية للعرض. جرّب براحتك: أضف وأصرف وعدّل زي ما تحب، وكل التعديلات بتتمسح تلقائيًا أول ما تسجّل خروج أو تقفل المتصفح، وكل مرة تفتح النسخة التجريبية بتبدأ من جديد.</p></details>
     </div>
@@ -583,9 +591,10 @@ const SCREENS = [
   {id:'dashboard', icon:'i-grid', tab:'لوحة القيادة', title:'لوحة القيادة', desc:'أول ما تدخل تعرف حالة المخزن كله في نظرة.', pts:['عدد الأصناف وإجمالي الرصيد','رصيد كل مخزن لوحده','تنبيهات الصلاحية مرتبة بالأولوية']},
   {id:'items', icon:'i-tag', tab:'الأصناف', title:'الأصناف بالصور', desc:'كل صنف بصورته ورصيده الإجمالي وحالة باتشاته بالألوان.', pts:['بحث سريع بالاسم','ترتيب يدوي بالسحب والإفلات','لون لكل باتش حسب صلاحيته']},
   {id:'item_detail', icon:'i-box', tab:'تفاصيل الصنف', title:'تفاصيل الصنف والباتشات', desc:'كل تاريخ صلاحية بكميته في كل مخزن وحالته.', pts:['رصيد كل باتش في كل مخزن','حالة الصلاحية بوضوح','حركة الصنف بالكامل بضغطة']},
-  {id:'bulk_out', icon:'i-upload', tab:'إذن الصرف', title:'إذن صرف بالصرف الذكي', desc:'اختار الأصناف والكميات، والنظام يحدد تاريخ الصلاحية اللي هيتصرف.', pts:['أكتر من صنف في إذن واحد','صرف بالأقرب انتهاءً مع استبعاد المنتهي','معاينة وطباعة قبل الحفظ']},
-  {id:'print_preview', icon:'i-print', tab:'طباعة الإذن', title:'إذن مطبوع بشكل رسمي', desc:'رقم الإذن والتاريخ والعميل والأصناف وتاريخ صلاحية كل كمية.', pts:['معاينة قبل الطباعة','مناسب للتوقيع والأرشفة','نفس الشكل لكل أنواع الأذون']},
-  {id:'approvals', icon:'i-hourglass', tab:'الموافقات', title:'أذون بانتظار الموافقة', desc:'أذون أمين المخزن بتستنى المدير يراجعها قبل ما تأثر على الرصيد.', pts:['مراجعة وتعديل قبل الاعتماد','رفض الإذن من غير ما يأثر على الرصيد','مين طلب وإمتى']},
+  {id:'bulk_out', icon:'i-upload', tab:'إذن الصرف', title:'إذن صرف بالصرف الذكي', desc:'اختار العميل والأصناف والكميات، والنظام يحدد تاريخ الصلاحية اللي هيتصرف.', pts:['العميل والعنوان واسم المستلم منفصلين','كل تاريخ صلاحية في سطر بكميته','إجمالي الكمية في آخر الجدول']},
+  {id:'print_preview', icon:'i-print', tab:'طباعة الإذن', title:'إذن مطبوع بشكل رسمي', desc:'التاريخ والعميل والعنوان ومين أنشأ الإذن وتاريخ صلاحية كل كمية.', pts:['خلفية بيضاء وخطوط سودا واضحة','اسم المنشئ والمعتمد على الإذن','نفس الشكل لكل أنواع الأذون']},
+  {id:'approvals', icon:'i-hourglass', tab:'الموافقات', title:'أذون بانتظار الموافقة', desc:'أذون أمين المخزن بتستنى المدير يراجعها قبل ما تأثر على الرصيد.', pts:['مراجعة وتعديل قبل الاعتماد','رفض الإذن من غير ما يأثر على الرصيد','مين طلب وإمتى وتاريخ الإذن الأصلي بيفضل']},
+  {id:'contacts', icon:'i-truck', tab:'الأشخاص', title:'دفتر الموردين والعملاء', desc:'سجّل الاسم والتليفون والعنوان مرة واحدة واستخدمه في كل إذن.', pts:['مورد أو عميل بتليفون وعنوان','بيتعبّى تلقائيًا في الإذن','كل إضافة وتعديل في سجل الحركات']},
   {id:'warehouses', icon:'i-swap', tab:'المخازن', title:'إدارة المخازن', desc:'ضيف مخازن وسمّيها، واعرض محتويات كل مخزن أو انقل بينهم.', pts:['مخازن بلا حدود','محتويات كل مخزن مع الطباعة','إذن نقل بين المخازن']},
   {id:'log', icon:'i-clock', tab:'سجل الحركات', title:'سجل كل الحركات', desc:'كل عملية في النظام متسجّلة بالوقت والنوع والكمية والمستخدم.', pts:['فلترة حسب نوع الحركة','بحث بالصنف أو المكان','مين عمل إيه وإمتى']},
   {id:'users', icon:'i-users', tab:'المستخدمين', title:'حسابات الموظفين', desc:'ضيف موظفين وغيّر كلمات المرور واحذف الحسابات من مكان واحد.', pts:['أدمن ومستخدم عادي','رمز استرجاع لحساب المدير','إدارة البيانات المسجّلة']},
