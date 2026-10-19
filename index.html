@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>try{var L=localStorage.getItem('stockproLang');if(L==='en'){document.documentElement.lang='en';document.documentElement.dir='ltr';}}catch(e){}</script>
 <script>try{var t=localStorage.getItem('stockproTheme');document.documentElement.setAttribute('data-theme',(t==='light')?'light':'dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}</script>
 <style>
   :root{
@@ -45,6 +46,9 @@
   :root[data-theme="dark"] .step::before{color:#fff;}
   :root[data-theme="dark"] img.logo-img,:root[data-theme="dark"] .nav-logo img,:root[data-theme="dark"] footer img{filter:brightness(1.25) saturate(1.1);}
   .theme-btn{all:unset;cursor:pointer;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;border:1.5px solid var(--line);background:var(--surface);color:var(--ink-2);transition:border-color .15s,color .15s,transform .15s;flex:none;}
+  .lang-btn{all:unset;cursor:pointer;min-width:42px;height:42px;box-sizing:border-box;padding:0 12px;border-radius:12px;display:grid;place-items:center;border:1.5px solid var(--line);background:var(--surface);color:var(--ink-2);font-family:'Cairo',sans-serif;font-weight:800;font-size:13.5px;transition:border-color .2s,color .2s,transform .2s;}
+  .lang-btn:hover{border-color:var(--teal);color:var(--teal);transform:translateY(-1px);}
+  .lang-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
   .theme-btn:hover{border-color:var(--teal);color:var(--teal);transform:translateY(-1px);}
   .theme-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
   .theme-btn .ico{width:20px;height:20px;}
@@ -84,7 +88,7 @@
   .nav-links a{font-family:'Cairo';font-weight:700;font-size:14.5px;color:var(--ink-2);padding:8px 12px;border-radius:9px;}
   .nav-links a:hover{background:var(--surface);color:var(--teal);}
   .nav .btn{padding:10px 18px;font-size:14.5px;}
-  @media(max-width:900px){.nav-links{display:none;} .nav-in{justify-content:space-between;}}
+  @media(max-width:900px){.nav-links{display:none;} .nav-in{justify-content:space-between;gap:10px;} .nav-logo{margin-inline-end:auto;}}
 
   /* hero */
   .hero{padding:56px 0 40px;position:relative;}
@@ -359,6 +363,7 @@
       <a href="#faq">الأسئلة الشائعة</a>
     </nav>
     <button type="button" class="theme-btn" id="themeBtn" aria-label="تبديل المظهر: نهاري / ليلي" title="نهاري / ليلي"><svg class="ico i-moon"><use href="#i-moon"/></svg><svg class="ico i-sun"><use href="#i-sun"/></svg></button>
+    <button type="button" class="lang-btn" id="langBtn" aria-label="تغيير اللغة إلى الإنجليزية" title="English" lang="en">EN</button>
     <a class="btn btn-primary" href="demo.html"><svg class="ico"><use href="#i-play"/></svg>جرّب النظام</a>
   </div>
 </header>
@@ -385,7 +390,7 @@
     <div class="hero-shot rv">
       <div class="frame">
         <div class="frame-bar"><i></i><i></i><i></i><div class="url">stockpro · لوحة القيادة</div></div>
-        <img src="img-dashboard.webp" alt="لوحة القيادة: عدد الأصناف والأرصدة وتنبيهات الصلاحية" width="1366" height="820" fetchpriority="high">
+        <img src="img-dashboard.webp" data-src-en="img-en-dashboard.webp" alt="لوحة القيادة: عدد الأصناف والأرصدة وتنبيهات الصلاحية" width="1366" height="820" fetchpriority="high">
       </div>
       <div class="float f1"><span class="dot o"><svg class="ico" style="width:18px;height:18px"><use href="#i-alert"/></svg></span><div>تنبيه صلاحية<small>عصير برتقال · ينتهي خلال شهرين</small></div></div>
       <div class="float f2"><span class="dot t"><svg class="ico" style="width:18px;height:18px"><use href="#i-check"/></svg></span><div>تم صرف الإذن رقم 7<small>الأقرب انتهاءً اتصرف الأول</small></div></div>
@@ -516,7 +521,7 @@
       </ul>
     </div>
     <div class="phones rv">
-      <div class="phone big"><img src="img-mobile_note.webp" alt="إذن صرف على الموبايل" width="585" height="1266" loading="lazy"></div>
+      <div class="phone big"><img src="img-mobile_note.webp" data-src-en="img-en-mobile_note.webp" alt="إذن صرف على الموبايل" width="585" height="1266" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -535,7 +540,7 @@
       </ul>
       <div class="swatches" aria-hidden="true"><i style="background:#0F766E"></i><i style="background:#D9480F"></i><i style="background:#F59E0B"></i><i style="background:#1D4ED8"></i><i style="background:#7C3AED"></i><i style="background:#BE123C"></i><i style="background:#334155"></i></div>
     </div>
-    <div class="shot rv"><img src="img-branding.webp" alt="لوحة تخصيص الهوية: اللوجو والأيقونة والخلفية والألوان" width="1366" height="820" loading="lazy" style="cursor:zoom-in" data-zoom></div>
+    <div class="shot rv"><img src="img-branding.webp" data-src-en="img-en-branding.webp" alt="لوحة تخصيص الهوية: اللوجو والأيقونة والخلفية والألوان" width="1366" height="820" loading="lazy" style="cursor:zoom-in" data-zoom></div>
   </div>
 </section>
 
@@ -637,6 +642,9 @@
 /* لإضافة زرار واتساب في آخر الصفحة: اكتب الرقم بالشكل الدولي من غير + (مثال: 2010xxxxxxxx) */
 const CONTACT_WHATSAPP = '';
 
+const I18N_EN={"أقسام الصفحة": "Page sections", "المميزات": "Features", "الصرف الذكي": "Smart issuing", "الشاشات": "Screens", "باسم شركتك": "Your brand", "الأسئلة الشائعة": "FAQ", "تبديل المظهر: نهاري / ليلي": "Switch theme: light / dark", "نهاري / ليلي": "Light / Dark", "جرّب النظام": "Try the system", "نظام سحابي لإدارة المخازن": "Cloud warehouse management", "اعرف كل": "Know where every", "كرتونة": "carton", "فين، وصلاحيتها": "is, when it", "إمتى": "expires", "، ومين صرفها": ", and who issued it", "نظام متكامل لشركات التوزيع والجملة: بيصرف تلقائيًا الباتش الأقرب انتهاءً، وبينبّهك قبل ما البضاعة تنتهي، وبيسجّل كل إذن إضافة وصرف ونقل بين المخازن — من الكمبيوتر أو الموبايل.": "A complete system for distribution and wholesale companies: it automatically issues the batch closest to expiry, warns you before stock expires, and records every receipt, issue and transfer between warehouses — from your computer or phone.", "جرّب النسخة التجريبية": "Try the demo", "شوف الشاشات": "See the screens", "بدون تثبيت أي برامج": "No software to install", "يشتغل على الموبايل": "Works on mobile", "عربي وإنجليزي": "Arabic & English", "أكتر من مستخدم ومخزن": "Multiple users & warehouses", "stockpro · لوحة القيادة": "stockpro · Dashboard", "لوحة القيادة: عدد الأصناف والأرصدة وتنبيهات الصلاحية": "Dashboard: item count, balances and expiry alerts", "تنبيه صلاحية": "Expiry alert", "عصير برتقال · ينتهي خلال شهرين": "Orange juice · expires in 2 months", "تم صرف الإذن رقم 7": "Stock-Out Voucher #7 completed", "الأقرب انتهاءً اتصرف الأول": "Closest expiry was issued first", "ليه ستوك برو؟": "Why StockPro?", "مشاكل المخازن اليومية… ليها حل": "Everyday warehouse problems… solved", "اتصمم النظام من شغل فعلي في شركة توزيع، عشان يحل المشاكل اللي بتكلّف فلوس كل يوم.": "Built from real work in a distribution company, to fix the problems that cost money every day.", "بضاعة بتنتهي صلاحيتها على الرف لأن الجديد اتصرف قبل القديم": "Stock expires on the shelf because new stock was issued before old stock", "النظام بيصرف لوحده الباتش الأقرب انتهاءً (والمنتهي مبيتصرفش)، وبينبّهك بالمنتهي واللي هينتهي خلال 6 شهور.": "The system automatically issues the batch closest to expiry (expired batches are never issued) and alerts you about expired stock and anything expiring within 6 months.", "مش عارف الرصيد الحقيقي في كل مخزن إلا بجرد يدوي": "You only know the real balance in each warehouse after a manual count", "رصيد لحظي لكل صنف، في كل مخزن، ولكل تاريخ صلاحية — بيتحدّث مع كل إذن.": "A live balance for every item, in every warehouse, for every expiry date — updated with each voucher.", "أذون ورقية بتضيع، ومحدش عارف مين صرف إيه وإمتى": "Paper vouchers get lost and nobody knows who issued what, and when", "كل إذن مرقّم ومحفوظ وجاهز للطباعة، وسجل حركات كامل بالوقت واسم المستخدم.": "Every voucher is numbered, saved and ready to print, with a full movement log showing the time and the user.", "كل اللي المخزن محتاجه في مكان واحد": "Everything a warehouse needs in one place", "من استلام البضاعة لحد صرفها للعميل، كل خطوة متسجّلة وواضحة.": "From receiving goods to issuing them to the customer, every step is recorded and clear.", "صرف تلقائي بالأقرب انتهاءً (FEFO)": "Automatic FEFO issuing (earliest expiry first)", "بتكتب الصنف والكمية بس، والنظام يصرف من الأقرب انتهاءً للأبعد، ويستبعد المنتهي تلقائيًا.": "Just enter the item and quantity, and the system issues from the earliest expiry to the latest and automatically skips expired batches.", "تنبيهات الصلاحية": "Expiry alerts", "لوحة قيادة بتوريك المنتهي والقريب من الانتهاء، مرتبة حسب الأولوية ومعاها الرصيد في كل مخزن.": "A dashboard that shows expired and soon-to-expire stock, sorted by priority with the balance in each warehouse.", "مخازن متعددة ونقل بينها": "Multiple warehouses and transfers", "ضيف مخازن بلا حدود، واعرف رصيد كل مخزن لوحده، وانقل البضاعة بإذن نقل مسجّل.": "Add unlimited warehouses, see each warehouse's balance on its own, and move stock with a recorded transfer voucher.", "أذون إضافة وصرف ونقل": "Stock-in, stock-out and transfer vouchers", "أذون مرقّمة بأسماء الموردين والعملاء والعناوين والمستلمين، وفي آخر كل جدول إجمالي الكمية، وفي كل الخانات تكتب جزء من الاسم والقايمة تفلتر على طول. تقدر ترجعلها وتعدّلها أو تلغيها بأمان، ومين أنشأها ومين اعتمدها بيظهر على الإذن.": "Numbered vouchers with supplier, customer, address and recipient names, a total quantity at the end of every table, and every field filters the list as you type part of a name. You can safely reopen, edit or cancel a voucher, and who created and approved it shows on the voucher.", "طباعة ومعاينة": "Printing and preview", "اطبع الإذن أو محتويات المخزن أو حركة الصنف أو تقرير النواقص بشكل رسمي: خلفية بيضاء وخطوط سودا واضحة، وكل تاريخ صلاحية في سطر بكميته.": "Print a voucher, warehouse contents, item movement or the shortage report in an official format: white background, clear black text, and each expiry date on its own line with its quantity.", "حد الطلب وتقرير النواقص": "Reorder level and shortage report", "حدد حد أدنى لكل صنف، والنظام يطلّعلك قايمة بالأصناف اللي محتاجة تتطلب.": "Set a minimum level for each item and the system lists the items that need to be ordered.", "مستخدمين وصلاحيات": "Users and permissions", "حساب لكل موظف، وتحدد لكل واحد يقدر يشوف ويضيف ويعدّل ويحذف ويطبع إيه بالظبط.": "An account for each employee, and you decide exactly what each one can view, add, edit, delete and print.", "دورة موافقات": "Approval workflow", "أذونات أمين المخزن ممكن تستنى موافقة المدير قبل ما تأثر على الرصيد، ويقدر يراجعها ويعدّلها أو يرفضها.": "A storekeeper's vouchers can wait for the manager's approval before they affect the balance, and the manager can review, edit or reject them.", "سجل حركات كامل": "Complete movement log", "كل إضافة وصرف ونقل وتعديل متسجّلة بالوقت واسم المستخدم، مع بحث وفلترة وسجل لكل صنف.": "Every receipt, issue, transfer and edit is recorded with time and user, with search, filters and a log for each item.", "بهوية شركتك": "Your company's identity", "اسم شركتك واللوجو والأيقونة وصورة الخلفية، ولون كل زرار لوحده — من لوحة التحكم.": "Your company name, logo, icon and background image, and a color for each button — all from the control panel.", "عربي / إنجليزي · فاتح / داكن": "Arabic / English · Light / Dark", "كل مستخدم يختار اللغة والمظهر اللي يريّحه، والاختيار بيتحفظ على جهازه.": "Each user picks the language and theme they like, and the choice is saved on their device.", "دفتر الأشخاص: موردين وعملاء": "People book: suppliers and customers", "سجّل الاسم والتليفون والعنوان مرة واحدة، وبعدها بيتعبّوا لوحدهم في الإذن. وكل إضافة أو تعديل بيتسجّل في سجل الحركات.": "Enter the name, phone and address once, and they fill in automatically on the voucher. Every addition or edit is recorded in the movement log.", "أمين المخزن مش محتاج يدوّر على تاريخ الصلاحية": "The storekeeper doesn't need to hunt for expiry dates", "لما تعمل إذن صرف، بتختار الصنف والكمية والمخزن بس. النظام بيستبعد أي باتش منتهي الصلاحية، ويرتّب الباقي حسب تاريخ الانتهاء، ويسحب من الأقرب الأول. ولو الكمية أكبر من الباتش بيكمّل من اللي بعده تلقائيًا، وفي الإذن كل تاريخ صلاحية بيظهر في سطر لوحده بكميته.": "When you create a stock-out voucher, you only choose the item, quantity and warehouse. The system skips any expired batch, sorts the rest by expiry date and takes from the earliest first. If the quantity is bigger than one batch, it continues from the next one automatically, and on the voucher each expiry date appears on its own line with its quantity.", "تقليل الهالك": "Less waste", "البضاعة القديمة بتخرج الأول، فبتقلّ الكميات اللي بتنتهي في المخزن.": "Old stock leaves first, so less stock expires in the warehouse.", "المنتهي عمره ما يتصرف": "Expired stock is never issued", "الباتشات المنتهية بتتستبعد من الصرف تلقائيًا، وتقدر تنقلها لمخزن المرتجعات بإذن نقل.": "Expired batches are excluded from issuing automatically, and you can move them to a returns warehouse with a transfer voucher.", "من غير أخطاء بشرية": "No human error", "مفيش اعتماد على ذاكرة الموظف أو قراءة التاريخ من على الكرتونة.": "No reliance on the employee's memory or on reading the date off the carton.", "شفافية كاملة": "Full transparency", "الإذن المطبوع بيوضّح كل تاريخ صلاحية والكمية اللي خرجت منه في سطر مستقل، وفي آخر الجدول إجمالي الكمية.": "The printed voucher shows each expiry date and the quantity issued from it on a separate line, with the total quantity at the end of the table.", "إذن صرف: زيت طعام 1 لتر": "Stock-Out Voucher: Vegetable cooking oil 1 L", "الكمية المطلوبة: 60 كرتونة": "Requested quantity: 60 cartons", "صلاحية 08/2026": "Expiry 08/2026", "منتهي الصلاحية — مستبعد من الصرف": "Expired — excluded from issuing", "مستبعد": "Excluded", "صلاحية 11/2026": "Expiry 11/2026", "متاح 40 كرتونة": "40 cartons available", "سحب 40": "Take 40", "صلاحية 05/2027": "Expiry 05/2027", "متاح 140 كرتونة": "140 cartons available", "سحب 20": "Take 20", "صلاحية 02/2028": "Expiry 02/2028", "متاح 90 كرتونة": "90 cartons available", "لم يُمس": "Untouched", "الكمية المسحوبة من الباتش": "Quantity taken from the batch", "الباقي في المخزن": "Remaining in the warehouse", "في الإذن المطبوع:": "On the printed voucher:", "سطر": "a line of", "بصلاحية 11/2026، وسطر": "with expiry 11/2026, and a line of", "بصلاحية 05/2027 — الإجمالي": "with expiry 05/2027 — total", "* مثال توضيحي لشرح الفكرة بأرقام افتراضية. الإذن الحقيقي من النظام تلاقيه في": "* An illustrative example with sample numbers to explain the idea. You'll find a real voucher from the system in the", "معرض الشاشات": "screens gallery", "طريقة الشغل": "How it works", "4 خطوات بسيطة": "4 simple steps", "الموظف بيتعلّم النظام في دقايق، لأن كل شاشة بتعمل حاجة واحدة وبوضوح.": "Staff learn the system in minutes, because each screen does one thing, clearly.", "سجّل أصنافك": "Register your items", "اسم الصنف ووحدة القياس أو وحدتين (زي كرتونة وعبوة) وصورته وحد الطلب. وممكن نسجّلهالك إحنا من ملفاتك الحالية.": "Item name, one or two units of measure (like carton and pack), photo and reorder level. We can also enter them for you from your existing files.", "استلم بإذن إضافة": "Receive with a stock-in voucher", "كل استلام بإذن فيه المورد والكمية والمخزن وتاريخ الصلاحية، فالرصيد يزيد فورًا.": "Every stock-in voucher includes the supplier, quantity, warehouse and expiry date, so the balance goes up immediately.", "اصرف بإذن صرف": "Issue with a stock-out voucher", "اختار الصنف والكمية والعميل، والنظام يصرف من الباتش الأقرب انتهاءً ويطبع الإذن.": "Choose the item, quantity and customer, and the system issues from the batch closest to expiry and prints the voucher.", "تابع وخد قرارك": "Track and decide", "تنبيهات الصلاحية والنواقص والسجل الكامل قدامك على لوحة القيادة في أي وقت.": "Expiry alerts, shortages and the full log are in front of you on the dashboard at any time.", "جولة في النظام": "A tour of the system", "شاشات حقيقية من النظام": "Real screens from the system", "اضغط على أي شاشة عشان تشوفها، واضغط على الصورة لتكبيرها.": "Pick any screen to see it, and click the image to enlarge it.", "شاشات النظام": "System screens", "في أي مكان": "Anywhere", "المخزن في جيبك": "The warehouse in your pocket", "النظام بيشتغل من المتصفح على الكمبيوتر والتابلت والموبايل، ومش محتاج تنزّل أي تطبيق. أمين المخزن يسجّل الإذن من جوه المخزن، والمدير يتابع ويوافق من مكتبه أو من بيته.": "The system runs in the browser on a computer, tablet or phone, with nothing to install. The storekeeper records the voucher from inside the warehouse, and the manager follows up and approves from the office or from home.", "تصميم متجاوب": "Responsive design", "الجداول بتتحرك أفقيًا والحقول بتترتب في عمود واحد، فالإذن يتسجّل من الموبايل بسهولة.": "Tables scroll sideways and fields stack in one column, so vouchers are easy to record from a phone.", "بيانات لحظية": "Live data", "أي إذن بيتسجّل بيظهر على كل الأجهزة فورًا.": "Any voucher that's recorded shows up on all devices instantly.", "اختصار على الشاشة الرئيسية": "Home-screen shortcut", "تقدر تضيفه على شاشة الموبايل ويفتح زي أي تطبيق.": "Add it to your phone's home screen and it opens like any app.", "إذن صرف على الموبايل": "Stock-Out Voucher on mobile", "نظامك، بهويتك إنت": "Your system, with your identity", "النسخة اللي هتستلمها مش هيبقى فيها اسم \"ستوك برو\". هتبقى باسم شركتك ولوجوك وألوانك، وتقدر تغيّر أي حاجة منهم بعدين بنفسك من لوحة \"تخصيص الهوية\".": "The version you receive won't carry the name \"StockPro\". It will carry your company's name, logo and colors, and you can change any of them later yourself from the \"Brand settings\" panel.", "الاسم واللوجو وأيقونة المتصفح": "Name, logo and browser icon", "في الهيدر وشاشة الدخول والتاب بتاعة المتصفح.": "In the header, the login screen and the browser tab.", "صورة خلفية من اختيارك": "A background image of your choice", "صورة مخزنك أو منتجاتك أو أي صورة تعبّر عن شركتك.": "A photo of your warehouse, your products, or anything that represents your company.", "كل زرار بلونه": "A color for every button", "لون الإضافة والصرف والنقل والحذف والهيدر والتابات، كل واحد لوحده.": "The color of add, issue, transfer, delete, the header and the tabs — each one on its own.", "لوحة تخصيص الهوية: اللوجو والأيقونة والخلفية والألوان": "Brand settings panel: logo, icon, background and colors", "مناسب لمين؟": "Who is it for?", "لأي نشاط عنده مخزن وبضاعة ليها صلاحية": "Any business with a warehouse and stock that has an expiry date", "وبيشتغل كمان مع الأصناف اللي مالهاش تاريخ صلاحية.": "It also works with items that have no expiry date.", "شركات التوزيع": "Distribution companies", "تجارة الجملة والسوبر ماركت": "Wholesale and supermarkets", "المواد الغذائية والمشروبات": "Food and beverages", "الزيوت والشحوم": "Oils and lubricants", "المنظفات ومستحضرات التجميل": "Cleaning products and cosmetics", "المستلزمات الطبية": "Medical supplies", "قطع الغيار والمستلزمات": "Spare parts and supplies", "قاعدة بيانات سحابية": "Cloud database", "بياناتك مش على جهاز واحد ممكن يبوظ أو يتسرق.": "Your data isn't on one device that could break or be stolen.", "اتصال مؤمّن": "Secure connection", "الاتصال مشفّر (HTTPS)، وقاعدة البيانات محمية بقواعد أمان.": "The connection is encrypted (HTTPS), and the database is protected by security rules.", "حساب لكل موظف": "An account for each employee", "كل واحد بحسابه وصلاحياته، وكل حركة متسجّلة باسمه، والحساب بيقفل لوحده بعد 15 دقيقة من غير نشاط.": "Everyone has their own account and permissions, every action is recorded under their name, and the account locks itself after 15 minutes of inactivity.", "تحديثات تلقائية": "Automatic updates", "أي تحسين أو ميزة جديدة بتوصل لكل الأجهزة من غير ما تعمل حاجة.": "Every improvement or new feature reaches all devices without you doing anything.", "النظام شغّال فعليًا في شركة توزيع، وبيتطوّر من ملاحظات الشغل اليومي، مش من نظريات.": "The system is already running in a distribution company, and it evolves from everyday work feedback, not from theories.", "إزاي تبدأ": "How to start", "من التجربة لحد ما النظام يشتغل عندك": "From trying it to running it in your company", "النظام بيتسلّم جاهز ومتظبط على شركتك، مش مجرد برنامج فاضي تبدأ فيه من الصفر.": "The system is delivered ready and set up for your company, not an empty program you start from scratch.", "اتفرج على كل الشاشات وجرّب تعمل أذون بنفسك.": "Watch all the screens and try creating vouchers yourself.", "نتفق على اللي محتاجه": "We agree on what you need", "عدد المخازن والمستخدمين وأي تعديل خاص بشغلك.": "The number of warehouses and users, and any customization for your business.", "نجهّز نسختك": "We prepare your version", "باسمك ولوجوك وألوانك، ونضيف أصنافك ومخازنك وحسابات موظفينك.": "With your name, logo and colors, and we add your items, warehouses and your staff accounts.", "تستلم وتبدأ الشغل": "You receive it and start working", "لينك خاص بشركتك، وتبدأ تسجّل أذونك من أول يوم.": "A private link for your company, and you start recording vouchers from day one.", "أسئلة بتتسأل كتير": "Frequently asked questions", "محتاج أثبّت برنامج على الأجهزة؟": "Do I need to install software on the devices?", "لا. النظام بيفتح من المتصفح (كروم أو غيره) على أي كمبيوتر أو موبايل، وتقدر تضيف له اختصار على الشاشة الرئيسية للموبايل.": "No. The system opens in the browser (Chrome or any other) on any computer or phone, and you can add a shortcut to the phone's home screen.", "ينفع أكتر من موظف يشتغلوا في نفس الوقت؟": "Can more than one employee work at the same time?", "أيوه. البيانات سحابية ومشتركة، فكل الأجهزة شايفة نفس الأرصدة والأذون، وكل موظف بحسابه وصلاحياته.": "Yes. The data is in the cloud and shared, so every device sees the same balances and vouchers, and each employee has their own account and permissions.", "عندي أصناف مالهاش تاريخ صلاحية، ينفع؟": "I have items with no expiry date — is that OK?", "أيوه. تاريخ الصلاحية اختياري في إذن الإضافة، والأصناف اللي من غير تاريخ بتتعامل عادي في الأرصدة والصرف والنقل.": "Yes. The expiry date is optional on the stock-in voucher, and items without a date are handled normally in balances, issuing and transfers.", "أقدر أمنع موظف من الحذف أو التعديل؟": "Can I stop an employee from deleting or editing?", "أيوه. لكل مستخدم بتحدد صلاحيات العرض والإضافة والتعديل والحذف والطباعة لكل قسم لوحده، وممكن تخلي أذوناته تستنى موافقتك قبل ما تتنفّذ.": "Yes. For each user you set view, add, edit, delete and print permissions for each section separately, and you can make their vouchers wait for your approval before they take effect.", "ينفع يبقى باسم شركتي ولوجوها؟": "Can it carry my company's name and logo?", "أيوه، النسخة بتتسلّم بهويتك كاملة، وتقدر تغيّر اللوجو والخلفية والألوان بعدين بنفسك من لوحة التحكم.": "Yes, the version is delivered with your full identity, and you can change the logo, background and colors yourself later from the control panel.", "ينفع أعدّل إذن محفوظ؟": "Can I edit a saved voucher?", "أيوه. بتفتح الإذن من «الأذون المحفوظة» وتعدّله، والنظام بيرجّع أثر القديم ويسجّل الجديد بأمان. تاريخ الإذن الأصلي بيفضل زي ما هو، واسم اللي أنشأه واللي اعتمده بيظهر في المعاينة والطباعة.": "Yes. Open the voucher from \"Saved Vouchers\" and edit it, and the system reverses the effect of the old version and records the new one safely. The original voucher date stays as it is, and the name of who created and approved it shows in preview and print.", "ينفع أطبع الأذون والتقارير؟": "Can I print vouchers and reports?", "أيوه. أذون الإضافة والصرف والنقل، ومحتويات المخزن، وحركة كل صنف، وتقرير النواقص — كلها ليها معاينة قبل الطباعة.": "Yes. Stock-in, stock-out and transfer vouchers, warehouse contents, each item's movement and the shortage report — all have a preview before printing.", "البيانات اللي في النسخة التجريبية حقيقية؟": "Is the demo data real?", "لا، كلها بيانات وهمية للعرض. جرّب براحتك: أضف وأصرف وعدّل زي ما تحب، وكل التعديلات بتتمسح تلقائيًا أول ما تسجّل خروج أو تقفل المتصفح، وكل مرة تفتح النسخة التجريبية بتبدأ من جديد.": "No, it's all fake data for demonstration. Feel free to add, issue and edit as you like: all changes are cleared automatically as soon as you sign out or close the browser, and every time you open the demo it starts fresh.", "جرّب النظام بنفسك دلوقتي": "Try the system yourself now", "النسخة التجريبية فيها أصناف ومخازن وأذون جاهزة. ادخل بأي حساب من دول، وجرّب تعمل إذن صرف وشوف الصرف الذكي بيشتغل.": "The demo comes with ready-made items, warehouses and vouchers. Sign in with either account below, create a stock-out voucher and watch smart issuing work.", "مدير النظام": "System manager", "كل الصلاحيات والموافقات": "All permissions and approvals", "المستخدم:": "Username:", "كلمة السر:": "Password:", "أمين مخزن": "Storekeeper", "أذوناته محتاجة موافقة المدير": "Their vouchers need the manager's approval", "افتح النسخة التجريبية": "Open the demo", "في شاشة الدخول هتلاقي زرار \"دخول سريع\" لكل حساب.": "On the login screen you'll find a \"Quick login\" button for each account.", "ستوك برو — نظام إدارة المخازن · الأسماء والبيانات في النسخة التجريبية وهمية للعرض فقط.": "StockPro — warehouse management system · Names and data in the demo are fictitious, for demonstration only.", "تكبير الصورة": "Enlarge image", "ستوك برو · نظام إدارة المخازن": "StockPro · Warehouse Management System", "نظام سحابي لإدارة المخازن لشركات التوزيع والجملة: صرف تلقائي بالأقرب انتهاءً، تنبيهات الصلاحية، مخازن متعددة، أذون إضافة وصرف ونقل، صلاحيات وموافقات، ويعمل على الموبايل.": "Cloud warehouse management for distribution and wholesale companies: automatic earliest-expiry issuing, expiry alerts, multiple warehouses, receipt, issue and transfer vouchers, permissions and approvals, and it works on mobile.", "اعرف كل كرتونة فين، وصلاحيتها إمتى، ومين صرفها — من أي جهاز.": "Know where every carton is, when it expires, and who issued it — from any device."};
+const SCREENS_EN={"dashboard": {"tab": "Dashboard", "title": "Dashboard", "desc": "See the state of the whole warehouse at a glance as soon as you sign in.", "pts": ["Item count and total balance", "Each warehouse's balance on its own", "Expiry alerts sorted by priority"]}, "items": {"tab": "Items", "title": "Items with photos", "desc": "Every item with its photo, total balance and batch status in colors.", "pts": ["Quick search by name", "Manual ordering by drag and drop", "A color for each batch by expiry"]}, "item_detail": {"tab": "Item details", "title": "Item details and batches", "desc": "Every expiry date with its quantity in each warehouse and its status.", "pts": ["Each batch's balance in each warehouse", "Clear expiry status", "The item's full movement in one click"]}, "bulk_out": {"tab": "Stock-Out Voucher", "title": "Stock-Out Voucher with smart issuing", "desc": "Choose the customer, items and quantities, and the system picks which expiry dates will be issued.", "pts": ["Customer, address and recipient name kept separate", "Each expiry date on its own line with its quantity", "Total quantity at the end of the table"]}, "print_preview": {"tab": "Print voucher", "title": "Official printed voucher", "desc": "The date, customer, address, who created the voucher and the expiry date of every quantity.", "pts": ["White background and clear black text", "Creator and approver names on the voucher", "Same look for all voucher types"]}, "approvals": {"tab": "Approvals", "title": "Vouchers awaiting approval", "desc": "Storekeeper vouchers wait for the manager to review them before they affect the balance.", "pts": ["Review and edit before approving", "Reject a voucher without affecting the balance", "Who asked, when, and the original voucher date is kept"]}, "contacts": {"tab": "People", "title": "Suppliers and customers book", "desc": "Enter the name, phone and address once and use them in every voucher.", "pts": ["Supplier or customer with phone and address", "Filled in automatically on the voucher", "Every addition and edit in the movement log"]}, "warehouses": {"tab": "Warehouses", "title": "Warehouse management", "desc": "Add and name warehouses, view each warehouse's contents or transfer between them.", "pts": ["Unlimited warehouses", "Each warehouse's contents with printing", "Transfer vouchers between warehouses"]}, "log": {"tab": "Movement log", "title": "Log of all movements", "desc": "Every operation in the system is recorded with time, type, quantity and user.", "pts": ["Filter by movement type", "Search by item or place", "Who did what and when"]}, "users": {"tab": "Users", "title": "Employee accounts", "desc": "Add employees, change passwords and delete accounts from one place.", "pts": ["Admin and regular user", "Recovery code for the manager account", "Manage recorded data"]}, "permissions": {"tab": "Permissions", "title": "Detailed permissions", "desc": "For each employee you set exactly what they can do in each section.", "pts": ["View / add / edit / delete / print", "For each section separately", "Turn on approval for vouchers"]}, "reorder": {"tab": "Shortage report", "title": "Items that reached the reorder level", "desc": "A ready list of items whose balance fell below the level you set.", "pts": ["A reorder level for each item", "Current balance next to the level", "Ready to print and send to the supplier"]}, "dark_en": {"tab": "Dark & English", "title": "Dark theme and English interface", "desc": "Each user picks the language and theme they like.", "pts": ["Fully Arabic and English", "Light and dark themes", "The choice is saved on each device"]}};
+
 const SCREENS = [
   {id:'dashboard', icon:'i-grid', tab:'لوحة القيادة', title:'لوحة القيادة', desc:'أول ما تدخل تعرف حالة المخزن كله في نظرة.', pts:['عدد الأصناف وإجمالي الرصيد','رصيد كل مخزن لوحده','تنبيهات الصلاحية مرتبة بالأولوية']},
   {id:'items', icon:'i-tag', tab:'الأصناف', title:'الأصناف بالصور', desc:'كل صنف بصورته ورصيده الإجمالي وحالة باتشاته بالألوان.', pts:['بحث سريع بالاسم','ترتيب يدوي بالسحب والإفلات','لون لكل باتش حسب صلاحيته']},
@@ -653,19 +661,26 @@ const SCREENS = [
   {id:'dark_en', icon:'i-moon', tab:'داكن وإنجليزي', title:'مظهر داكن وواجهة إنجليزي', desc:'كل مستخدم يختار اللغة والمظهر اللي يريّحه.', pts:['عربي وإنجليزي بالكامل','مظهر فاتح وداكن','الاختيار بيتحفظ على كل جهاز']},
 ];
 const tabs = document.getElementById('tabs'), panels = document.getElementById('panels');
-SCREENS.forEach((s,i)=>{
-  const b = document.createElement('button');
-  b.className = 'tab' + (i===0?' active':''); b.setAttribute('role','tab'); b.id = 'tab-'+s.id;
-  b.setAttribute('aria-selected', i===0?'true':'false'); b.setAttribute('aria-controls','panel-'+s.id); b.tabIndex = i===0?0:-1;
-  b.innerHTML = `<svg class="ico"><use href="#${s.icon}"/></svg>${s.tab}`;
-  b.addEventListener('click', ()=>select(i));
-  tabs.appendChild(b);
-  const p = document.createElement('div');
-  p.className = 'panel' + (i===0?' active':''); p.id = 'panel-'+s.id; p.setAttribute('role','tabpanel'); p.setAttribute('aria-labelledby','tab-'+s.id);
-  p.innerHTML = `<div class="shot"><img src="img-${s.id}.webp" alt="${s.title}" loading="${i===0?'eager':'lazy'}" data-zoom></div>
-    <div class="cap"><div><h3>${s.title}</h3><p>${s.desc}</p></div><ul>${s.pts.map(x=>`<li><svg class="ico"><use href="#i-check"/></svg>${x}</li>`).join('')}</ul></div>`;
-  panels.appendChild(p);
-});
+let LANG = (document.documentElement.lang==='en') ? 'en' : 'ar';
+const tr = s => (LANG==='en' && SCREENS_EN[s.id]) ? Object.assign({}, s, SCREENS_EN[s.id]) : s;
+function renderGallery(active){
+  tabs.innerHTML=''; panels.innerHTML='';
+  SCREENS.forEach((s0,i)=>{
+    const s = tr(s0);
+    const b = document.createElement('button');
+    b.className = 'tab' + (i===active?' active':''); b.setAttribute('role','tab'); b.id = 'tab-'+s.id;
+    b.setAttribute('aria-selected', i===active?'true':'false'); b.setAttribute('aria-controls','panel-'+s.id); b.tabIndex = i===active?0:-1;
+    b.innerHTML = `<svg class="ico"><use href="#${s0.icon}"/></svg>${s.tab}`;
+    b.addEventListener('click', ()=>select(i));
+    tabs.appendChild(b);
+    const p = document.createElement('div');
+    p.className = 'panel' + (i===active?' active':''); p.id = 'panel-'+s.id; p.setAttribute('role','tabpanel'); p.setAttribute('aria-labelledby','tab-'+s.id);
+    p.innerHTML = `<div class="shot"><img src="${(LANG==='en'&&s.id!=='dark_en')?'img-en-'+s.id:'img-'+s.id}.webp" alt="${s.title}" loading="${i===active?'eager':'lazy'}" data-zoom></div>
+      <div class="cap"><div><h3>${s.title}</h3><p>${s.desc}</p></div><ul>${s.pts.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+    panels.appendChild(p);
+  });
+}
+renderGallery(0);
 function select(i){
   [...tabs.children].forEach((b,j)=>{ b.classList.toggle('active', j===i); b.setAttribute('aria-selected', j===i?'true':'false'); b.tabIndex = j===i?0:-1; });
   [...panels.children].forEach((p,j)=>p.classList.toggle('active', j===i));
@@ -674,15 +689,16 @@ function select(i){
 tabs.addEventListener('keydown', e=>{
   const cur = [...tabs.children].findIndex(b=>b.classList.contains('active'));
   const vertical = getComputedStyle(tabs).flexDirection==='column';
-  const next = vertical ? ['ArrowDown'] : ['ArrowLeft'];   // RTL: left = next
-  const prev = vertical ? ['ArrowUp'] : ['ArrowRight'];
+  const rtl = document.documentElement.dir==='rtl';
+  const next = vertical ? ['ArrowDown'] : [rtl?'ArrowLeft':'ArrowRight'];
+  const prev = vertical ? ['ArrowUp'] : [rtl?'ArrowRight':'ArrowLeft'];
   let n = null;
   if(next.includes(e.key)) n = (cur+1)%SCREENS.length;
   if(prev.includes(e.key)) n = (cur-1+SCREENS.length)%SCREENS.length;
   if(n!==null){ e.preventDefault(); select(n); tabs.children[n].focus(); }
 });
 // preload the rest of the gallery once the page is idle
-window.addEventListener('load', ()=>setTimeout(()=>SCREENS.forEach(s=>{ const im=new Image(); im.src='img-'+s.id+'.webp'; }), 1200));
+window.addEventListener('load', ()=>setTimeout(()=>SCREENS.forEach(s=>{ const im=new Image(); im.src=((LANG==='en'&&s.id!=='dark_en')?'img-en-':'img-')+s.id+'.webp'; }), 1200));
 
 // lightbox
 const lb = document.getElementById('lb');
@@ -712,6 +728,58 @@ const io = new IntersectionObserver(entries=>{
   });
 }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+
+// ---- language (Arabic / English) ----
+const AR_SKIP = new Set(['SCRIPT','STYLE','SVG','CODE']);
+const I18N_ATTRS = ['alt','aria-label','title'];
+function norm(t){ return t.replace(/\s+/g,' ').trim(); }
+function applyLang(lang){
+  LANG = lang;
+  const root = document.documentElement;
+  root.lang = lang; root.dir = (lang==='en') ? 'ltr' : 'rtl';
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {acceptNode(n){
+    const p = n.parentElement; if(!p || AR_SKIP.has(p.tagName.toUpperCase()) || p.closest('#langBtn,#tabs,#panels')) return NodeFilter.FILTER_REJECT;
+    return /\S/.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT; }});
+  const nodes=[]; while(w.nextNode()) nodes.push(w.currentNode);
+  nodes.forEach(n=>{
+    if(n.__ar===undefined){ if(!/[\u0600-\u06FF]/.test(n.nodeValue)) return; n.__ar = n.nodeValue; }
+    const lead = n.__ar.match(/^\s*/)[0], trail = n.__ar.match(/\s*$/)[0];
+    const key = norm(n.__ar);
+    n.nodeValue = (lang==='en' && I18N_EN[key]) ? lead + I18N_EN[key] + trail : n.__ar;
+  });
+  document.querySelectorAll('[alt],[aria-label],[title]').forEach(el=>{
+    if(el.closest('#tabs,#panels') || el.id==='langBtn' || el.id==='themeBtn') return;
+    I18N_ATTRS.forEach(at=>{
+      if(!el.hasAttribute(at)) return;
+      const k='__ar_'+at; if(el[k]===undefined){ const v=el.getAttribute(at); if(!/[\u0600-\u06FF]/.test(v)) return; el[k]=v; }
+      el.setAttribute(at, (lang==='en' && I18N_EN[norm(el[k])]) ? I18N_EN[norm(el[k])] : el[k]);
+    });
+  });
+  if(document.__arTitle===undefined) document.__arTitle = document.title;
+  document.title = (lang==='en') ? I18N_EN[norm(document.__arTitle)] : document.__arTitle;
+  ['meta[name="description"]','meta[property="og:title"]','meta[property="og:description"]'].forEach(q=>{
+    const m=document.querySelector(q); if(!m) return; if(m.__ar===undefined) m.__ar=m.content;
+    m.content = (lang==='en' && I18N_EN[norm(m.__ar)]) ? I18N_EN[norm(m.__ar)] : m.__ar;
+  });
+  const loc=document.querySelector('meta[property="og:locale"]'); if(loc) loc.content = (lang==='en') ? 'en_US' : 'ar_EG';
+  document.querySelectorAll('img[data-src-en]').forEach(im=>{ if(!im.dataset.srcAr) im.dataset.srcAr=im.getAttribute('src'); im.src = (lang==='en') ? im.dataset.srcEn : im.dataset.srcAr; });
+  const act = Math.max(0,[...tabs.children].findIndex(b=>b.classList.contains('active')));
+  renderGallery(act);
+  const lbl = document.getElementById('langBtn');
+  lbl.textContent = (lang==='en') ? 'عربي' : 'EN';
+  lbl.setAttribute('aria-label', (lang==='en') ? 'Switch language to Arabic' : 'تغيير اللغة إلى الإنجليزية');
+  lbl.setAttribute('lang', (lang==='en') ? 'ar' : 'en');
+  lbl.title = (lang==='en') ? 'عربي' : 'English';
+  const tb = document.getElementById('themeBtn');
+  if(tb){ tb.setAttribute('aria-label', lang==='en' ? 'Switch theme: light / dark' : 'تبديل المظهر: نهاري / ليلي'); tb.title = lang==='en' ? 'Light / Dark' : 'نهاري / ليلي'; }
+  const wa = document.querySelector('#contactSlot a'); if(wa) wa.textContent = (lang==='en') ? 'Contact us on WhatsApp' : 'تواصل معنا على واتساب';
+}
+document.getElementById('langBtn').addEventListener('click',()=>{
+  const next = (LANG==='en') ? 'ar' : 'en';
+  applyLang(next); try{localStorage.setItem('stockproLang',next);}catch(e){}
+});
+if(LANG==='en') applyLang('en');
 
 // optional WhatsApp contact
 if(CONTACT_WHATSAPP){
