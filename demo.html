@@ -1500,7 +1500,7 @@ const I18N = {
     doneReorderBtn: `تم`,
     addNewItemHeading: `إضافة صنف جديد`,
     itemNameLabel: `اسم الصنف`,
-    itemNameExamplePlaceholder: `مثال: Inventory ...`,
+    itemNameExamplePlaceholder: `مثال: أرز أبيض فاخر 5 كجم`,
     reorderLevelOptionalLabel: `حد الطلب (اختياري)`,
     reorderLevelExamplePlaceholder: `مثال: 20 — سيبه فاضي لو عايز الحد الافتراضي (20)`,
     reorderLevelDefaultPlaceholder: `سيبه فاضي لو عايز الحد الافتراضي (20)`,
@@ -1977,7 +1977,7 @@ const I18N = {
     doneReorderBtn: `Done`,
     addNewItemHeading: `Add New Item`,
     itemNameLabel: `Item Name`,
-    itemNameExamplePlaceholder: `e.g. Inventory ...`,
+    itemNameExamplePlaceholder: `e.g. Premium White Rice 5 kg`,
     reorderLevelOptionalLabel: `Reorder Level (optional)`,
     reorderLevelExamplePlaceholder: `e.g. 20 — leave empty for the default (20)`,
     reorderLevelDefaultPlaceholder: `Leave empty for the default (20)`,
@@ -2487,7 +2487,7 @@ function rerenderCurrentUI(){
 
 /* ============ BRANDING / WHITE-LABEL ============ */
 // Defaults captured once from the CSS/constants as they ship in this file,
-// so "reset to default" always restores the original Inventory look regardless
+// so "reset to default" always restores the original look regardless
 // of whatever custom branding a company saved afterwards.
 let DEFAULT_BRANDING = null;
 // One entry per independently-colorable button "role" in the app. Each role
@@ -4135,7 +4135,7 @@ function syncItemSortMenu(){
 }
 // Item list DISPLAY mode is a personal viewing preference (like theme/language), not shared
 // business data, so it's kept per-device in localStorage rather than synced to the server.
-const ITEM_VIEW_KEY = 'inventoryItemViewMode';
+const ITEM_VIEW_KEY = 'itemViewMode';
 let itemViewMode = 'grid';
 try{ const saved = localStorage.getItem(ITEM_VIEW_KEY); if(saved==='grid'||saved==='compact'||saved==='list') itemViewMode = saved; }catch(e){}
 function setItemViewMode(mode){
