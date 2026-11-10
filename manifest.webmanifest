@@ -1,0 +1,17 @@
+{
+  "name": "ستوك برو · إدارة المخازن",
+  "short_name": "ستوك برو",
+  "description": "نظام إدارة المخازن (نسخة تجريبية)",
+  "start_url": "./demo.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#E7E8EA",
+  "theme_color": "#D9480F",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
